@@ -1,0 +1,10 @@
+name = "The Empty Bottle"
+[address]
+street = "123 N Road"
+city = "Chicago"
+state = "IL"
+zip_code = 65432
+[calendar]
+num_events = 50
+start_month = "June"
+stop_month = "July"

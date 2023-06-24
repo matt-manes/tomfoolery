@@ -1,7 +1,7 @@
 import pytest
+from pathier import Pathier
 
 from tomfoolery import TomFoolery
-from pathier import Pathier
 
 root = Pathier(__file__).parent
 
@@ -22,4 +22,4 @@ def test__dataclass():
     assert venue.name == venuetoml["name"]
     assert venue.address.city == venuetoml["address"]["city"]
     assert type(venue.calendar.num_events) == int
-    # (root / "venue.py").write_text("")
+    (root / "venue.py").write_text("")

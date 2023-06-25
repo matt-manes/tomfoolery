@@ -2,6 +2,7 @@ import ast
 from typing import Any
 
 import black
+import isort
 from pathier import Pathier, Pathish
 
 from tomfoolery import utilities
@@ -20,6 +21,10 @@ class TomFoolery:
         """Returns the source code this object represents."""
         self.module.body = [self.imports, self.classes]  # type: ignore
         return ast.unparse(self.module)
+
+    def format_str(self, code: str) -> str:
+        """Sort imports and format with `black`."""
+        return black.format_str(isort.api.sort_code_string(code), mode=black.Mode())  # type: ignore
 
     # Seat |===================================== Import Nodes =====================================|
 
@@ -150,7 +155,7 @@ class TomFoolery:
         data = path.loads()
         src = self.generate(name, data)
         src = src.replace("filepath", path.name)
-        src = black.format_str(src, mode=black.Mode())  # type: ignore
+        src = self.format_str(src)
         if write_result:
             path.with_suffix(".py").write_text(src)
         return src

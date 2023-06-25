@@ -5,9 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "tomfoolery"
 description = "CLI to generate Python dataclasses that model and load toml files (or other can-representated-as-a-dict files)"
-version = "0.0.0"
+version = "0.1.0"
 requires-python = ">=3.10"
-dependencies = ["pathier", "black", "dacite", "typing_extensions", "pytest"]
+dependencies = ["pathier", "black", "dacite", "typing_extensions", "pytest", "isort"]
 readme = "README.md"
 keywords = ["dataclass", "dataclasses", "toml", "json"]
 classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"]

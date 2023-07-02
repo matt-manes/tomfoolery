@@ -23,7 +23,10 @@ class TomFoolery:
     @property
     def source(self) -> str:
         """Returns the source code this object represents."""
-        return self.format_str(ast.unparse(self.module))
+        try:
+            return self.format_str(ast.unparse(self.module))
+        except Exception as e:
+            return ast.unparse(self.module)
 
     def format_str(self, code: str) -> str:
         """Sort imports and format with `black`."""
@@ -232,5 +235,9 @@ def generate_from_file(datapath: Pathish, outpath: Pathish | None = None):
     data = datapath.loads()
     fool = TomFoolery(module)  # type: ignore
     source = fool.generate(datapath.stem, data)
-    source = fool.format_str(source.replace("filepath", datapath.name))
+    source = source.replace("filepath", datapath.name)
+    try:
+        source = fool.format_str(source)
+    except Exception as e:
+        print("Unable to format output.")
     outpath.write_text(source)

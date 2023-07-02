@@ -1,6 +1,6 @@
 import argparse
-import ast_comments as ast
 
+import ast_comments as ast
 from pathier import Pathier, Pathish
 
 from tomfoolery import TomFoolery

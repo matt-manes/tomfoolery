@@ -1,8 +1,10 @@
+import sys
+
+import ast_comments as ast
 import pytest
 from pathier import Pathier
-import ast_comments as ast
+
 from tomfoolery import TomFoolery, generate_from_file
-import sys
 
 root = Pathier(__file__).parent
 

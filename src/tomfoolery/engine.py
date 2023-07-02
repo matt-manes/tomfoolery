@@ -214,3 +214,23 @@ class TomFoolery:
         self.add_dataclass(dataclass)
         self.fix_order()
         return self.source
+
+
+def generate_from_file(datapath: Pathish, outpath: Pathish | None = None):
+    """Generate a `dataclass` named after the file `datapath` points at.
+
+    If `outpath` is not given, the output file will be the same as `datapath`, but with a `.py` extension.
+
+    Can be any `.toml` or `.json` file where all keys are valid Python variable names."""
+
+    datapath = Pathier(datapath)
+    if outpath:
+        outpath = Pathier(outpath)
+    else:
+        outpath = datapath.with_suffix(".py")
+    module = ast.parse(outpath.read_text()) if outpath.exists() else None
+    data = datapath.loads()
+    fool = TomFoolery(module)  # type: ignore
+    source = fool.generate(datapath.stem, data)
+    source = fool.format_str(source.replace("filepath", datapath.name))
+    outpath.write_text(source)

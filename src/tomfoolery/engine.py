@@ -224,19 +224,3 @@ class TomFoolery:
         self.add_dataclass(dataclass)
         self.fix_order()
         return self.source
-
-    def generate_from_file(self, path: Pathish, write_result: bool = False) -> str:
-        """Generate a `dataclass` named after the file `path` points at and return the source code.
-
-        Can be any `.toml` or `.json` file where all keys are valid Python variable names.
-
-        If `write_result` is `True`, the source code will be written to a file of the same name as `path`, but with a `.py` extension."""
-        path = Pathier(path)
-        name = path.stem
-        data = path.loads()
-        src = self.generate(name, data)
-        src = src.replace("filepath", path.name)
-        src = self.format_str(src)
-        if write_result:
-            path.with_suffix(".py").write_text(src)
-        return src

@@ -39,5 +39,3 @@ which can then be used:
 
 * Only works with `.toml` and `.json` files.
 * All keys must be valid Python variable names.
-* If the schema of your original file changes, you can rerun the tool to update the dataclass;
-however, anything that you have added or modified will be overwritten.

@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.1 (2023-07-01)
+
+#### Fixes
+
+* fix circular import issue
+#### Performance improvements
+
+* catch fomatting exceptions
+#### Docs
+
+* update readme
 ## v1.0.0 (2023-07-01)
 
 #### New Features

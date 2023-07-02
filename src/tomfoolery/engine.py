@@ -1,10 +1,8 @@
 from typing import Any
-
 import ast_comments as ast
 import black
 import isort
 from pathier import Pathier, Pathish
-
 from tomfoolery import utilities
 
 root = Pathier(__file__).parent
@@ -16,14 +14,14 @@ class TomFoolery:
         self.module: ast.Module = module or ast.Module([], [])
 
     @property
-    def source(self) -> str:
-        """Returns the source code this object represents."""
-        return self.format_str(ast.unparse(self.module))
-
-    @property
     def class_names(self) -> list[str]:
         """List of class names in `self.module.body`."""
         return [node.name for node in self.module.body if type(node) == ast.ClassDef]
+
+    @property
+    def source(self) -> str:
+        """Returns the source code this object represents."""
+        return self.format_str(ast.unparse(self.module))
 
     def format_str(self, code: str) -> str:
         """Sort imports and format with `black`."""
@@ -79,57 +77,6 @@ class TomFoolery:
         load = self.nodes_from_file(root / "_load.py")[0]
         return load if isinstance(load, ast.FunctionDef) else ast.FunctionDef()
 
-    def nodes_from_file(self, file: Pathish) -> list[ast.stmt]:
-        """Return ast-parsed module body from `file`."""
-        node = ast.parse(Pathier(file).read_text())
-        return node.body if isinstance(node, ast.Module) else []
-
-    def func_names(self, node: ast.Module | ast.ClassDef) -> list[str]:
-        return [child.name for child in node.body if isinstance(child, ast.FunctionDef)]
-
-    def annassign_names(self, node: ast.Module | ast.ClassDef) -> list[str]:
-        return [
-            child.target.id
-            for child in node.body
-            if isinstance(child, ast.AnnAssign) and isinstance(child.target, ast.Name)
-        ]
-
-    def last_annassign_index(self, node: ast.ClassDef) -> int:
-        """Return the `node.body` index of the last annotated assignment node.
-        Assumes all annotated assignments are sequential and the first elements of `node`."""
-        for i, child in enumerate(node.body):
-            if not isinstance(child, ast.AnnAssign):
-                return i - 1
-        return len(node.body)
-
-    def class_index(self, class_name: str) -> int:
-        """Return the `self.module.body` index for a class with `class_name`."""
-        for i, node in enumerate(self.module.body):
-            if isinstance(node, ast.ClassDef) and node.name == class_name:
-                return i
-        return len(self.module.body)
-
-    def merge_dataclasses(
-        self, class1: ast.ClassDef, class2: ast.ClassDef
-    ) -> ast.ClassDef:
-        """Add annotated assignments and functions from `class2` to `class1` and return the result."""
-        funcs = [node.name for node in class1.body if isinstance(node, ast.FunctionDef)]
-        assigns = [
-            node.target.id
-            for node in class1.body
-            if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name)
-        ]
-        for node in class2.body:
-            if isinstance(node, ast.FunctionDef) and node.name not in funcs:
-                class1.body.append(node)
-            elif (
-                isinstance(node, ast.AnnAssign)
-                and isinstance(node.target, ast.Name)
-                and node.target.id not in assigns
-            ):
-                class1.body.insert(self.last_annassign_index(class1) + 1, node)
-        return class1
-
     def add_dataclass(self, dataclass: ast.ClassDef):
         """Add or merge `dataclass` into `self.module.body`."""
         if dataclass.name not in self.class_names:
@@ -137,6 +84,13 @@ class TomFoolery:
         else:
             classdex = self.class_index(dataclass.name)
             self.module.body[classdex] = self.merge_dataclasses(self.module.body[classdex], dataclass)  # type: ignore
+
+    def class_index(self, class_name: str) -> int:
+        """Return the `self.module.body` index for a class with `class_name`."""
+        for i, node in enumerate(self.module.body):
+            if isinstance(node, ast.ClassDef) and node.name == class_name:
+                return i
+        return len(self.module.body)
 
     def fix_order(self):
         """Reorder `self.module.body` so that definitions preceede instances.
@@ -156,6 +110,40 @@ class TomFoolery:
             else:
                 new_body.append(node)
         self.module.body = new_body
+
+    def last_annassign_index(self, node: ast.ClassDef) -> int:
+        """Return the `node.body` index of the last annotated assignment node.
+        Assumes all annotated assignments are sequential and the first elements of `node`."""
+        for i, child in enumerate(node.body):
+            if not isinstance(child, ast.AnnAssign):
+                return i - 1
+        return len(node.body)
+
+    def merge_dataclasses(
+        self, class1: ast.ClassDef, class2: ast.ClassDef
+    ) -> ast.ClassDef:
+        """Add annotated assignments and functions from `class2` to `class1` and return the result."""
+        funcs = [node.name for node in class1.body if isinstance(node, ast.FunctionDef)]
+        assigns = [
+            node.target.id
+            for node in class1.body
+            if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name)
+        ]
+        for node in class2.body:
+            if isinstance(node, ast.FunctionDef) and node.name not in funcs:
+                class1.body.append(node)
+            elif (
+                isinstance(node, ast.AnnAssign)
+                and isinstance(node.target, ast.Name)
+                and (node.target.id not in assigns)
+            ):
+                class1.body.insert(self.last_annassign_index(class1) + 1, node)
+        return class1
+
+    def nodes_from_file(self, file: Pathish) -> list[ast.stmt]:
+        """Return ast-parsed module body from `file`."""
+        node = ast.parse(Pathier(file).read_text())
+        return node.body if isinstance(node, ast.Module) else []
 
     # Seat |======================================= Builders =======================================|
 

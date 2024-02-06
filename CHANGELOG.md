@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.0 (2024-02-06)
+
+#### New Features
+
+* dataclasses can be generated non-recursively
+
+
 ## v1.0.2 (2024-02-06)
 
 #### Docs

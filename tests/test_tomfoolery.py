@@ -60,3 +60,17 @@ def test__update():
     assert not venue.afraid_of_the_dark.me
     assert venue.afraid_of_the_dark.you
     datafile.dumps(original)
+
+
+def test__no_recursion():
+    datafile = root / "venue.toml"
+    pyfile = datafile.with_name("no_recursion.py")
+    pyfile.delete()
+    generate_from_file(datafile, pyfile, False)
+    pyfile.add_to_PATH()
+    from no_recursion import Venue
+
+    venue = Venue.load()
+    assert isinstance(venue.name, str)
+    assert isinstance(venue.address, dict)
+    assert isinstance(venue.calendar, dict)

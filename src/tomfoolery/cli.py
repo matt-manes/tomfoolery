@@ -20,6 +20,12 @@ def get_args() -> argparse.Namespace:
         default=None,
         help=""" The output file path. If not given, the output will be named after the `file` arg, but with a `.py` extension. """,
     )
+    parser.add_argument(
+        "-nr",
+        "--no_recursion",
+        action="store_false",
+        help=""" Don't recursively create dataclasses for values that are dictionaries.""",
+    )
     args = parser.parse_args()
     return args
 
@@ -27,7 +33,7 @@ def get_args() -> argparse.Namespace:
 def main(args: argparse.Namespace | None = None):
     if not args:
         args = get_args()
-    tomfoolery.generate_from_file(args.file, args.outpath)
+    tomfoolery.generate_from_file(args.file, args.outpath, args.no_recursion)
 
 
 if __name__ == "__main__":

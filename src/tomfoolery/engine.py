@@ -11,9 +11,47 @@ root = Pathier(__file__).parent
 
 
 class TomFoolery:
-    def __init__(self, module: ast.Module | None = None):
-        """If no `module` is given, an empty new one will be created."""
+    def __init__(self, module: ast.Module | None = None, recursive: bool = True):
+        """If no `module` is given, an empty new one will be created.
+
+        When generating a `dataclass` from a dictionary,
+        if `recursive` is `True` then values that are also dictionaries will have a `dataclass` generated.
+
+        The annotation for that field in the original `dataclass` will be typed as an instance of the second `dataclass`.
+
+        If `recursive` is `False`, values that are dictionaries will be typed as such.
+
+        i.e.
+        from a file named "chonker.toml"
+        >>> {
+        >>>  "name": "yeehaw",
+        >>>  "stats": {
+        >>>      "average": 77.54,
+        >>>      "max": 94.22,
+        >>>      "min": 22.76
+        >>>  }
+        >>> }
+
+        With recursive == True
+        >>> @dataclass
+        >>> class Stats:
+        >>>     average: float
+        >>>     max: float
+        >>>     min: float
+        >>>
+        >>> @dataclass
+        >>> class Chonker:
+        >>>     name: str
+        >>>     stats: Stats
+
+        With recursive == False
+        >>> @dataclass
+        >>> class Chonker:
+        >>>     name: str
+        >>>     stats: dict
+        """
         self.module: ast.Module = module or ast.Module([], [])
+        self.recursive = recursive
 
     @property
     def class_names(self) -> list[str]:
@@ -118,7 +156,8 @@ class TomFoolery:
 
     def last_annassign_index(self, node: ast.ClassDef) -> int:
         """Return the `node.body` index of the last annotated assignment node.
-        Assumes all annotated assignments are sequential and the first elements of `node`."""
+        Assumes all annotated assignments are sequential and the first elements of `node`.
+        """
         for i, child in enumerate(node.body):
             if not isinstance(child, ast.AnnAssign):
                 return i - 1
@@ -157,12 +196,15 @@ class TomFoolery:
     ) -> list[ast.AnnAssign]:
         """Return a list of annotated assignment nodes built from `data`.
 
-        Any values in `data` that are themselves a dictionary, will have a `dataclass` built and inserted in `self.classes`.
+        If `recursive` is `True` (the default),
+        any values in `data` that are themselves a dictionary,
+        will have a `dataclass` built and inserted in `self.classes`.
 
-        The field for that value will be annotated as an instance of that secondary `dataclass`."""
+        The field for that value will be annotated as an instance of that secondary `dataclass`.
+        """
         assigns = []
         for key, val in data.items():
-            if isinstance(val, dict):
+            if self.recursive and isinstance(val, dict):
                 dataclass = self.build_dataclass(key, val)
                 self.add_dataclass(dataclass)
                 assigns.append(
@@ -179,7 +221,8 @@ class TomFoolery:
     ) -> ast.AnnAssign:
         """Return an annotated assignment node with `name` and an annotation based on the type of `val`.
 
-        If `evaluate_type` is `False`, then `val` will be used directly as the type annotation instead of `type(val).__name__`."""
+        If `evaluate_type` is `False`, then `val` will be used directly as the type annotation instead of `type(val).__name__`.
+        """
         return ast.AnnAssign(
             ast.Name(name, ast.Store()),
             ast.Name(utilities.build_type(val) if evaluate_type else val, ast.Load()),
@@ -192,7 +235,8 @@ class TomFoolery:
     ) -> ast.ClassDef:
         """Build a `dataclass` with `name` from `data` and insert it into `self.classes`.
 
-        If `add_methods` is `True`, `load()` and `dump()` functions will be added to the class."""
+        If `add_methods` is `True`, `load()` and `dump()` functions will be added to the class.
+        """
         class_ = ast.ClassDef(
             utilities.key_to_classname(name),
             [],
@@ -209,7 +253,8 @@ class TomFoolery:
     def generate(self, name: str, data: dict[str, Any]) -> str:
         """Generate a `dataclass` with `name` from `data` and return the source code.
 
-        Currently, all keys in `data` and any of its nested dictionaries must be valid Python variable names."""
+        Currently, all keys in `data` and any of its nested dictionaries must be valid Python variable names.
+        """
         for node in self.import_nodes:
             if node not in self.module.body:
                 self.module.body.insert(0, node)
@@ -219,12 +264,17 @@ class TomFoolery:
         return self.source
 
 
-def generate_from_file(datapath: Pathish, outpath: Pathish | None = None):
+def generate_from_file(
+    datapath: Pathish, outpath: Pathish | None = None, recursive: bool = True
+):
     """Generate a `dataclass` named after the file `datapath` points at.
 
     If `outpath` is not given, the output file will be the same as `datapath`, but with a `.py` extension.
 
-    Can be any `.toml` or `.json` file where all keys are valid Python variable names."""
+    Can be any `.toml` or `.json` file where all keys are valid Python variable names.
+
+    If `recursive` is `True`, dictionary values will be converted to dataclasses.
+    """
 
     datapath = Pathier(datapath)
     if outpath:
@@ -233,7 +283,7 @@ def generate_from_file(datapath: Pathish, outpath: Pathish | None = None):
         outpath = datapath.with_suffix(".py")
     module = ast.parse(outpath.read_text()) if outpath.exists() else None
     data = datapath.loads()
-    fool = TomFoolery(module)  # type: ignore
+    fool = TomFoolery(module, recursive)  # type: ignore
     source = fool.generate(datapath.stem, data)
     source = source.replace("filepath", datapath.name)
     try:

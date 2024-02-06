@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.2 (2024-02-06)
+
+#### Docs
+
+* update load and dump docstrings
+
+
 ## v1.0.1 (2023-07-01)
 
 #### Fixes

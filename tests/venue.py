@@ -36,11 +36,11 @@ class Venue:
 
     @classmethod
     def load(cls, path: Pathish = Pathier(__file__).parent / "venue.toml") -> Self:
-        """Return a `datamodel` object populated from `path`."""
+        """Return an instance of this class populated from `path`."""
         data = Pathier(path).loads()
         return dacite.from_dict(cls, data)
 
     def dump(self, path: Pathish = Pathier(__file__).parent / "venue.toml"):
-        """Write the contents of this `datamodel` object to `path`."""
+        """Write the contents of this instance to `path`."""
         data = asdict(self)
         Pathier(path).dumps(data)

@@ -1,7 +1,7 @@
 [project]
 name = "tomfoolery"
 description = "CLI to generate Python dataclasses that model and load toml files (or other can-representated-as-a-dict files)"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = ["pathier", "black", "dacite", "typing_extensions", "pytest", "isort", "ast_comments", "ast-comments"]
 readme = "README.md"
 keywords = ["dataclass", "dataclasses", "toml", "json"]
@@ -26,7 +26,7 @@ addopts = ["--import-mode=importlib"]
 pythonpath = "src"
 
 [tool.hatch.build.targets.sdist]
-exclude = [".coverage", ".pytest_cache", ".vscode", "tests",  "imgs", "htmlcov", "docs", "*.md"]
+exclude = [".coverage", ".pytest_cache", ".vscode", "tests", "imgs", "htmlcov", "docs", "*.md"]
 
 [build-system]
 requires = ["hatchling"]

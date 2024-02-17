@@ -18,14 +18,72 @@
         <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
         <div>
 
-            <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
-                   pattern=".+" required>
 
 
-        <h2>Submodules</h2>
-        <ul>
-                <li><a href="tomfoolery/engine.html">engine</a></li>
-        </ul>
+
+        <h2>API Documentation</h2>
+            <ul class="memberlist">
+            <li>
+                    <a class="class" href="#TomFoolery">TomFoolery</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#TomFoolery.__init__">TomFoolery</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#TomFoolery.class_names">class_names</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#TomFoolery.source">source</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.format_str">format_str</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#TomFoolery.dataclass_node">dataclass_node</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#TomFoolery.dump_node">dump_node</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#TomFoolery.load_node">load_node</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.add_dataclass">add_dataclass</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.class_index">class_index</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.fix_order">fix_order</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.last_annassign_index">last_annassign_index</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.merge_dataclasses">merge_dataclasses</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.nodes_from_file">nodes_from_file</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.annotated_assignments_from_dict">annotated_assignments_from_dict</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.build_annotated_assignment">build_annotated_assignment</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.build_dataclass">build_dataclass</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TomFoolery.generate">generate</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="function" href="#generate_from_file">generate_from_file</a>
+            </li>
+    </ul>
 
 
 
@@ -48,194 +106,862 @@ tomfoolery    </h1>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="kn">from</span> <span class="nn">.engine</span> <span class="kn">import</span> <span class="n">TomFoolery</span><span class="p">,</span> <span class="n">generate_from_file</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;engine&quot;</span><span class="p">]</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TomFoolery&quot;</span><span class="p">,</span> <span class="s2">&quot;generate_from_file&quot;</span><span class="p">]</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">5</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;1.1.0&quot;</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">5</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;1.1.1&quot;</span>
 </span></pre></div>
 
 
             </section>
+                <section id="TomFoolery">
+                            <input id="TomFoolery-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">TomFoolery</span>:
+
+                <label class="view-source-button" for="TomFoolery-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery-14"><a href="#TomFoolery-14"><span class="linenos"> 14</span></a><span class="k">class</span> <span class="nc">TomFoolery</span><span class="p">:</span>
+</span><span id="TomFoolery-15"><a href="#TomFoolery-15"><span class="linenos"> 15</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+</span><span id="TomFoolery-16"><a href="#TomFoolery-16"><span class="linenos"> 16</span></a>        <span class="sd">&quot;&quot;&quot;If no `module` is given, an empty new one will be created.</span>
+</span><span id="TomFoolery-17"><a href="#TomFoolery-17"><span class="linenos"> 17</span></a>
+</span><span id="TomFoolery-18"><a href="#TomFoolery-18"><span class="linenos"> 18</span></a><span class="sd">        When generating a `dataclass` from a dictionary,</span>
+</span><span id="TomFoolery-19"><a href="#TomFoolery-19"><span class="linenos"> 19</span></a><span class="sd">        if `recursive` is `True` then values that are also dictionaries will have a `dataclass` generated.</span>
+</span><span id="TomFoolery-20"><a href="#TomFoolery-20"><span class="linenos"> 20</span></a>
+</span><span id="TomFoolery-21"><a href="#TomFoolery-21"><span class="linenos"> 21</span></a><span class="sd">        The annotation for that field in the original `dataclass` will be typed as an instance of the second `dataclass`.</span>
+</span><span id="TomFoolery-22"><a href="#TomFoolery-22"><span class="linenos"> 22</span></a>
+</span><span id="TomFoolery-23"><a href="#TomFoolery-23"><span class="linenos"> 23</span></a><span class="sd">        If `recursive` is `False`, values that are dictionaries will be typed as such.</span>
+</span><span id="TomFoolery-24"><a href="#TomFoolery-24"><span class="linenos"> 24</span></a>
+</span><span id="TomFoolery-25"><a href="#TomFoolery-25"><span class="linenos"> 25</span></a><span class="sd">        i.e.</span>
+</span><span id="TomFoolery-26"><a href="#TomFoolery-26"><span class="linenos"> 26</span></a><span class="sd">        from a file named &quot;chonker.toml&quot;</span>
+</span><span id="TomFoolery-27"><a href="#TomFoolery-27"><span class="linenos"> 27</span></a><span class="sd">        &gt;&gt;&gt; {</span>
+</span><span id="TomFoolery-28"><a href="#TomFoolery-28"><span class="linenos"> 28</span></a><span class="sd">        &gt;&gt;&gt;  &quot;name&quot;: &quot;yeehaw&quot;,</span>
+</span><span id="TomFoolery-29"><a href="#TomFoolery-29"><span class="linenos"> 29</span></a><span class="sd">        &gt;&gt;&gt;  &quot;stats&quot;: {</span>
+</span><span id="TomFoolery-30"><a href="#TomFoolery-30"><span class="linenos"> 30</span></a><span class="sd">        &gt;&gt;&gt;      &quot;average&quot;: 77.54,</span>
+</span><span id="TomFoolery-31"><a href="#TomFoolery-31"><span class="linenos"> 31</span></a><span class="sd">        &gt;&gt;&gt;      &quot;max&quot;: 94.22,</span>
+</span><span id="TomFoolery-32"><a href="#TomFoolery-32"><span class="linenos"> 32</span></a><span class="sd">        &gt;&gt;&gt;      &quot;min&quot;: 22.76</span>
+</span><span id="TomFoolery-33"><a href="#TomFoolery-33"><span class="linenos"> 33</span></a><span class="sd">        &gt;&gt;&gt;  }</span>
+</span><span id="TomFoolery-34"><a href="#TomFoolery-34"><span class="linenos"> 34</span></a><span class="sd">        &gt;&gt;&gt; }</span>
+</span><span id="TomFoolery-35"><a href="#TomFoolery-35"><span class="linenos"> 35</span></a>
+</span><span id="TomFoolery-36"><a href="#TomFoolery-36"><span class="linenos"> 36</span></a><span class="sd">        With recursive == True</span>
+</span><span id="TomFoolery-37"><a href="#TomFoolery-37"><span class="linenos"> 37</span></a><span class="sd">        &gt;&gt;&gt; @dataclass</span>
+</span><span id="TomFoolery-38"><a href="#TomFoolery-38"><span class="linenos"> 38</span></a><span class="sd">        &gt;&gt;&gt; class Stats:</span>
+</span><span id="TomFoolery-39"><a href="#TomFoolery-39"><span class="linenos"> 39</span></a><span class="sd">        &gt;&gt;&gt;     average: float</span>
+</span><span id="TomFoolery-40"><a href="#TomFoolery-40"><span class="linenos"> 40</span></a><span class="sd">        &gt;&gt;&gt;     max: float</span>
+</span><span id="TomFoolery-41"><a href="#TomFoolery-41"><span class="linenos"> 41</span></a><span class="sd">        &gt;&gt;&gt;     min: float</span>
+</span><span id="TomFoolery-42"><a href="#TomFoolery-42"><span class="linenos"> 42</span></a><span class="sd">        &gt;&gt;&gt;</span>
+</span><span id="TomFoolery-43"><a href="#TomFoolery-43"><span class="linenos"> 43</span></a><span class="sd">        &gt;&gt;&gt; @dataclass</span>
+</span><span id="TomFoolery-44"><a href="#TomFoolery-44"><span class="linenos"> 44</span></a><span class="sd">        &gt;&gt;&gt; class Chonker:</span>
+</span><span id="TomFoolery-45"><a href="#TomFoolery-45"><span class="linenos"> 45</span></a><span class="sd">        &gt;&gt;&gt;     name: str</span>
+</span><span id="TomFoolery-46"><a href="#TomFoolery-46"><span class="linenos"> 46</span></a><span class="sd">        &gt;&gt;&gt;     stats: Stats</span>
+</span><span id="TomFoolery-47"><a href="#TomFoolery-47"><span class="linenos"> 47</span></a>
+</span><span id="TomFoolery-48"><a href="#TomFoolery-48"><span class="linenos"> 48</span></a><span class="sd">        With recursive == False</span>
+</span><span id="TomFoolery-49"><a href="#TomFoolery-49"><span class="linenos"> 49</span></a><span class="sd">        &gt;&gt;&gt; @dataclass</span>
+</span><span id="TomFoolery-50"><a href="#TomFoolery-50"><span class="linenos"> 50</span></a><span class="sd">        &gt;&gt;&gt; class Chonker:</span>
+</span><span id="TomFoolery-51"><a href="#TomFoolery-51"><span class="linenos"> 51</span></a><span class="sd">        &gt;&gt;&gt;     name: str</span>
+</span><span id="TomFoolery-52"><a href="#TomFoolery-52"><span class="linenos"> 52</span></a><span class="sd">        &gt;&gt;&gt;     stats: dict</span>
+</span><span id="TomFoolery-53"><a href="#TomFoolery-53"><span class="linenos"> 53</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery-54"><a href="#TomFoolery-54"><span class="linenos"> 54</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span> <span class="o">=</span> <span class="n">module</span> <span class="ow">or</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span><span class="p">([],</span> <span class="p">[])</span>
+</span><span id="TomFoolery-55"><a href="#TomFoolery-55"><span class="linenos"> 55</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span> <span class="o">=</span> <span class="n">recursive</span>
+</span><span id="TomFoolery-56"><a href="#TomFoolery-56"><span class="linenos"> 56</span></a>
+</span><span id="TomFoolery-57"><a href="#TomFoolery-57"><span class="linenos"> 57</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-58"><a href="#TomFoolery-58"><span class="linenos"> 58</span></a>    <span class="k">def</span> <span class="nf">class_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="TomFoolery-59"><a href="#TomFoolery-59"><span class="linenos"> 59</span></a>        <span class="sd">&quot;&quot;&quot;List of class names in `self.module.body`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-60"><a href="#TomFoolery-60"><span class="linenos"> 60</span></a>        <span class="k">return</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">==</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">]</span>
+</span><span id="TomFoolery-61"><a href="#TomFoolery-61"><span class="linenos"> 61</span></a>
+</span><span id="TomFoolery-62"><a href="#TomFoolery-62"><span class="linenos"> 62</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-63"><a href="#TomFoolery-63"><span class="linenos"> 63</span></a>    <span class="k">def</span> <span class="nf">source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="TomFoolery-64"><a href="#TomFoolery-64"><span class="linenos"> 64</span></a>        <span class="sd">&quot;&quot;&quot;Returns the source code this object represents.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-65"><a href="#TomFoolery-65"><span class="linenos"> 65</span></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="TomFoolery-66"><a href="#TomFoolery-66"><span class="linenos"> 66</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_str</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">))</span>
+</span><span id="TomFoolery-67"><a href="#TomFoolery-67"><span class="linenos"> 67</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="TomFoolery-68"><a href="#TomFoolery-68"><span class="linenos"> 68</span></a>            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">)</span>
+</span><span id="TomFoolery-69"><a href="#TomFoolery-69"><span class="linenos"> 69</span></a>
+</span><span id="TomFoolery-70"><a href="#TomFoolery-70"><span class="linenos"> 70</span></a>    <span class="k">def</span> <span class="nf">format_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="TomFoolery-71"><a href="#TomFoolery-71"><span class="linenos"> 71</span></a>        <span class="sd">&quot;&quot;&quot;Sort imports and format with `black`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-72"><a href="#TomFoolery-72"><span class="linenos"> 72</span></a>        <span class="k">return</span> <span class="n">black</span><span class="o">.</span><span class="n">format_str</span><span class="p">(</span><span class="n">isort</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">sort_code_string</span><span class="p">(</span><span class="n">code</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="n">black</span><span class="o">.</span><span class="n">Mode</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
+</span><span id="TomFoolery-73"><a href="#TomFoolery-73"><span class="linenos"> 73</span></a>
+</span><span id="TomFoolery-74"><a href="#TomFoolery-74"><span class="linenos"> 74</span></a>    <span class="c1"># Seat |===================================== Import Nodes =====================================|</span>
+</span><span id="TomFoolery-75"><a href="#TomFoolery-75"><span class="linenos"> 75</span></a>
+</span><span id="TomFoolery-76"><a href="#TomFoolery-76"><span class="linenos"> 76</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-77"><a href="#TomFoolery-77"><span class="linenos"> 77</span></a>    <span class="k">def</span> <span class="nf">dacite_import_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">Import</span><span class="p">:</span>
+</span><span id="TomFoolery-78"><a href="#TomFoolery-78"><span class="linenos"> 78</span></a>        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Import</span><span class="p">([</span><span class="n">ast</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;dacite&quot;</span><span class="p">)])</span>
+</span><span id="TomFoolery-79"><a href="#TomFoolery-79"><span class="linenos"> 79</span></a>
+</span><span id="TomFoolery-80"><a href="#TomFoolery-80"><span class="linenos"> 80</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-81"><a href="#TomFoolery-81"><span class="linenos"> 81</span></a>    <span class="k">def</span> <span class="nf">dataclass_import_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">:</span>
+</span><span id="TomFoolery-82"><a href="#TomFoolery-82"><span class="linenos"> 82</span></a>        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">(</span>
+</span><span id="TomFoolery-83"><a href="#TomFoolery-83"><span class="linenos"> 83</span></a>            <span class="s2">&quot;dataclasses&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;dataclass&quot;</span><span class="p">),</span> <span class="n">ast</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;asdict&quot;</span><span class="p">)],</span> <span class="mi">0</span>
+</span><span id="TomFoolery-84"><a href="#TomFoolery-84"><span class="linenos"> 84</span></a>        <span class="p">)</span>
+</span><span id="TomFoolery-85"><a href="#TomFoolery-85"><span class="linenos"> 85</span></a>
+</span><span id="TomFoolery-86"><a href="#TomFoolery-86"><span class="linenos"> 86</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-87"><a href="#TomFoolery-87"><span class="linenos"> 87</span></a>    <span class="k">def</span> <span class="nf">import_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">Import</span> <span class="o">|</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">]:</span>
+</span><span id="TomFoolery-88"><a href="#TomFoolery-88"><span class="linenos"> 88</span></a>        <span class="k">return</span> <span class="p">[</span>
+</span><span id="TomFoolery-89"><a href="#TomFoolery-89"><span class="linenos"> 89</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">dacite_import_node</span><span class="p">,</span>
+</span><span id="TomFoolery-90"><a href="#TomFoolery-90"><span class="linenos"> 90</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">dataclass_import_node</span><span class="p">,</span>
+</span><span id="TomFoolery-91"><a href="#TomFoolery-91"><span class="linenos"> 91</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">pathier_import_node</span><span class="p">,</span>
+</span><span id="TomFoolery-92"><a href="#TomFoolery-92"><span class="linenos"> 92</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">typing_extensions_import_node</span><span class="p">,</span>
+</span><span id="TomFoolery-93"><a href="#TomFoolery-93"><span class="linenos"> 93</span></a>        <span class="p">]</span>
+</span><span id="TomFoolery-94"><a href="#TomFoolery-94"><span class="linenos"> 94</span></a>
+</span><span id="TomFoolery-95"><a href="#TomFoolery-95"><span class="linenos"> 95</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-96"><a href="#TomFoolery-96"><span class="linenos"> 96</span></a>    <span class="k">def</span> <span class="nf">pathier_import_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">:</span>
+</span><span id="TomFoolery-97"><a href="#TomFoolery-97"><span class="linenos"> 97</span></a>        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">(</span>
+</span><span id="TomFoolery-98"><a href="#TomFoolery-98"><span class="linenos"> 98</span></a>            <span class="s2">&quot;pathier&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;Pathier&quot;</span><span class="p">),</span> <span class="n">ast</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;Pathish&quot;</span><span class="p">)],</span> <span class="mi">0</span>
+</span><span id="TomFoolery-99"><a href="#TomFoolery-99"><span class="linenos"> 99</span></a>        <span class="p">)</span>
+</span><span id="TomFoolery-100"><a href="#TomFoolery-100"><span class="linenos">100</span></a>
+</span><span id="TomFoolery-101"><a href="#TomFoolery-101"><span class="linenos">101</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-102"><a href="#TomFoolery-102"><span class="linenos">102</span></a>    <span class="k">def</span> <span class="nf">typing_extensions_import_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">:</span>
+</span><span id="TomFoolery-103"><a href="#TomFoolery-103"><span class="linenos">103</span></a>        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">(</span><span class="s2">&quot;typing_extensions&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;Self&quot;</span><span class="p">)])</span>
+</span><span id="TomFoolery-104"><a href="#TomFoolery-104"><span class="linenos">104</span></a>
+</span><span id="TomFoolery-105"><a href="#TomFoolery-105"><span class="linenos">105</span></a>    <span class="c1"># Seat |======================================== Nodes ========================================|</span>
+</span><span id="TomFoolery-106"><a href="#TomFoolery-106"><span class="linenos">106</span></a>
+</span><span id="TomFoolery-107"><a href="#TomFoolery-107"><span class="linenos">107</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-108"><a href="#TomFoolery-108"><span class="linenos">108</span></a>    <span class="k">def</span> <span class="nf">dataclass_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">:</span>
+</span><span id="TomFoolery-109"><a href="#TomFoolery-109"><span class="linenos">109</span></a>        <span class="sd">&quot;&quot;&quot;A node representing `@dataclass`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-110"><a href="#TomFoolery-110"><span class="linenos">110</span></a>        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="s2">&quot;dataclass&quot;</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
+</span><span id="TomFoolery-111"><a href="#TomFoolery-111"><span class="linenos">111</span></a>
+</span><span id="TomFoolery-112"><a href="#TomFoolery-112"><span class="linenos">112</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-113"><a href="#TomFoolery-113"><span class="linenos">113</span></a>    <span class="k">def</span> <span class="nf">dump_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">:</span>
+</span><span id="TomFoolery-114"><a href="#TomFoolery-114"><span class="linenos">114</span></a>        <span class="sd">&quot;&quot;&quot;The dumping function for the generated `dataclass`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-115"><a href="#TomFoolery-115"><span class="linenos">115</span></a>        <span class="n">dump</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_from_file</span><span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;_dump.py&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="TomFoolery-116"><a href="#TomFoolery-116"><span class="linenos">116</span></a>        <span class="k">return</span> <span class="n">dump</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dump</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">)</span> <span class="k">else</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">()</span>
+</span><span id="TomFoolery-117"><a href="#TomFoolery-117"><span class="linenos">117</span></a>
+</span><span id="TomFoolery-118"><a href="#TomFoolery-118"><span class="linenos">118</span></a>    <span class="nd">@property</span>
+</span><span id="TomFoolery-119"><a href="#TomFoolery-119"><span class="linenos">119</span></a>    <span class="k">def</span> <span class="nf">load_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">:</span>
+</span><span id="TomFoolery-120"><a href="#TomFoolery-120"><span class="linenos">120</span></a>        <span class="sd">&quot;&quot;&quot;The loading function for the generated `dataclass`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-121"><a href="#TomFoolery-121"><span class="linenos">121</span></a>        <span class="n">load</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_from_file</span><span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;_load.py&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="TomFoolery-122"><a href="#TomFoolery-122"><span class="linenos">122</span></a>        <span class="k">return</span> <span class="n">load</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">load</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">)</span> <span class="k">else</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">()</span>
+</span><span id="TomFoolery-123"><a href="#TomFoolery-123"><span class="linenos">123</span></a>
+</span><span id="TomFoolery-124"><a href="#TomFoolery-124"><span class="linenos">124</span></a>    <span class="k">def</span> <span class="nf">add_dataclass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataclass</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">):</span>
+</span><span id="TomFoolery-125"><a href="#TomFoolery-125"><span class="linenos">125</span></a>        <span class="sd">&quot;&quot;&quot;Add or merge `dataclass` into `self.module.body`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-126"><a href="#TomFoolery-126"><span class="linenos">126</span></a>        <span class="k">if</span> <span class="n">dataclass</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">:</span>
+</span><span id="TomFoolery-127"><a href="#TomFoolery-127"><span class="linenos">127</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
+</span><span id="TomFoolery-128"><a href="#TomFoolery-128"><span class="linenos">128</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="TomFoolery-129"><a href="#TomFoolery-129"><span class="linenos">129</span></a>            <span class="n">classdex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_index</span><span class="p">(</span><span class="n">dataclass</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span id="TomFoolery-130"><a href="#TomFoolery-130"><span class="linenos">130</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="n">classdex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_dataclasses</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="n">classdex</span><span class="p">],</span> <span class="n">dataclass</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span><span id="TomFoolery-131"><a href="#TomFoolery-131"><span class="linenos">131</span></a>
+</span><span id="TomFoolery-132"><a href="#TomFoolery-132"><span class="linenos">132</span></a>    <span class="k">def</span> <span class="nf">class_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="TomFoolery-133"><a href="#TomFoolery-133"><span class="linenos">133</span></a>        <span class="sd">&quot;&quot;&quot;Return the `self.module.body` index for a class with `class_name`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-134"><a href="#TomFoolery-134"><span class="linenos">134</span></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">):</span>
+</span><span id="TomFoolery-135"><a href="#TomFoolery-135"><span class="linenos">135</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">)</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">class_name</span><span class="p">:</span>
+</span><span id="TomFoolery-136"><a href="#TomFoolery-136"><span class="linenos">136</span></a>                <span class="k">return</span> <span class="n">i</span>
+</span><span id="TomFoolery-137"><a href="#TomFoolery-137"><span class="linenos">137</span></a>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+</span><span id="TomFoolery-138"><a href="#TomFoolery-138"><span class="linenos">138</span></a>
+</span><span id="TomFoolery-139"><a href="#TomFoolery-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="nf">fix_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TomFoolery-140"><a href="#TomFoolery-140"><span class="linenos">140</span></a>        <span class="sd">&quot;&quot;&quot;Reorder `self.module.body` so that definitions preceede instances.</span>
+</span><span id="TomFoolery-141"><a href="#TomFoolery-141"><span class="linenos">141</span></a>
+</span><span id="TomFoolery-142"><a href="#TomFoolery-142"><span class="linenos">142</span></a><span class="sd">        i.e. A newly added class is defined before another class creates an instance.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-143"><a href="#TomFoolery-143"><span class="linenos">143</span></a>        <span class="n">new_body</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">stmt</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="TomFoolery-144"><a href="#TomFoolery-144"><span class="linenos">144</span></a>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+</span><span id="TomFoolery-145"><a href="#TomFoolery-145"><span class="linenos">145</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">):</span>
+</span><span id="TomFoolery-146"><a href="#TomFoolery-146"><span class="linenos">146</span></a>                <span class="n">placed</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="TomFoolery-147"><a href="#TomFoolery-147"><span class="linenos">147</span></a>                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">new_node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_body</span><span class="p">):</span>
+</span><span id="TomFoolery-148"><a href="#TomFoolery-148"><span class="linenos">148</span></a>                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">new_node</span><span class="p">):</span>
+</span><span id="TomFoolery-149"><a href="#TomFoolery-149"><span class="linenos">149</span></a>                        <span class="n">new_body</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery-150"><a href="#TomFoolery-150"><span class="linenos">150</span></a>                        <span class="n">placed</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="TomFoolery-151"><a href="#TomFoolery-151"><span class="linenos">151</span></a>                        <span class="k">break</span>
+</span><span id="TomFoolery-152"><a href="#TomFoolery-152"><span class="linenos">152</span></a>                <span class="k">if</span> <span class="ow">not</span> <span class="n">placed</span><span class="p">:</span>
+</span><span id="TomFoolery-153"><a href="#TomFoolery-153"><span class="linenos">153</span></a>                    <span class="n">new_body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery-154"><a href="#TomFoolery-154"><span class="linenos">154</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="TomFoolery-155"><a href="#TomFoolery-155"><span class="linenos">155</span></a>                <span class="n">new_body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery-156"><a href="#TomFoolery-156"><span class="linenos">156</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">new_body</span>
+</span><span id="TomFoolery-157"><a href="#TomFoolery-157"><span class="linenos">157</span></a>
+</span><span id="TomFoolery-158"><a href="#TomFoolery-158"><span class="linenos">158</span></a>    <span class="k">def</span> <span class="nf">last_annassign_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="TomFoolery-159"><a href="#TomFoolery-159"><span class="linenos">159</span></a>        <span class="sd">&quot;&quot;&quot;Return the `node.body` index of the last annotated assignment node.</span>
+</span><span id="TomFoolery-160"><a href="#TomFoolery-160"><span class="linenos">160</span></a><span class="sd">        Assumes all annotated assignments are sequential and the first elements of `node`.</span>
+</span><span id="TomFoolery-161"><a href="#TomFoolery-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery-162"><a href="#TomFoolery-162"><span class="linenos">162</span></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">):</span>
+</span><span id="TomFoolery-163"><a href="#TomFoolery-163"><span class="linenos">163</span></a>            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">):</span>
+</span><span id="TomFoolery-164"><a href="#TomFoolery-164"><span class="linenos">164</span></a>                <span class="k">return</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span id="TomFoolery-165"><a href="#TomFoolery-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+</span><span id="TomFoolery-166"><a href="#TomFoolery-166"><span class="linenos">166</span></a>
+</span><span id="TomFoolery-167"><a href="#TomFoolery-167"><span class="linenos">167</span></a>    <span class="k">def</span> <span class="nf">merge_dataclasses</span><span class="p">(</span>
+</span><span id="TomFoolery-168"><a href="#TomFoolery-168"><span class="linenos">168</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">class1</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">,</span> <span class="n">class2</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span>
+</span><span id="TomFoolery-169"><a href="#TomFoolery-169"><span class="linenos">169</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">:</span>
+</span><span id="TomFoolery-170"><a href="#TomFoolery-170"><span class="linenos">170</span></a>        <span class="sd">&quot;&quot;&quot;Add annotated assignments and functions from `class2` to `class1` and return the result.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-171"><a href="#TomFoolery-171"><span class="linenos">171</span></a>        <span class="n">funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">class1</span><span class="o">.</span><span class="n">body</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">)]</span>
+</span><span id="TomFoolery-172"><a href="#TomFoolery-172"><span class="linenos">172</span></a>        <span class="n">assigns</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="TomFoolery-173"><a href="#TomFoolery-173"><span class="linenos">173</span></a>            <span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span>
+</span><span id="TomFoolery-174"><a href="#TomFoolery-174"><span class="linenos">174</span></a>            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">class1</span><span class="o">.</span><span class="n">body</span>
+</span><span id="TomFoolery-175"><a href="#TomFoolery-175"><span class="linenos">175</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span>
+</span><span id="TomFoolery-176"><a href="#TomFoolery-176"><span class="linenos">176</span></a>        <span class="p">]</span>
+</span><span id="TomFoolery-177"><a href="#TomFoolery-177"><span class="linenos">177</span></a>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">class2</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+</span><span id="TomFoolery-178"><a href="#TomFoolery-178"><span class="linenos">178</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">)</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">:</span>
+</span><span id="TomFoolery-179"><a href="#TomFoolery-179"><span class="linenos">179</span></a>                <span class="n">class1</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery-180"><a href="#TomFoolery-180"><span class="linenos">180</span></a>            <span class="k">elif</span> <span class="p">(</span>
+</span><span id="TomFoolery-181"><a href="#TomFoolery-181"><span class="linenos">181</span></a>                <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">)</span>
+</span><span id="TomFoolery-182"><a href="#TomFoolery-182"><span class="linenos">182</span></a>                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span>
+</span><span id="TomFoolery-183"><a href="#TomFoolery-183"><span class="linenos">183</span></a>                <span class="ow">and</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">assigns</span><span class="p">)</span>
+</span><span id="TomFoolery-184"><a href="#TomFoolery-184"><span class="linenos">184</span></a>            <span class="p">):</span>
+</span><span id="TomFoolery-185"><a href="#TomFoolery-185"><span class="linenos">185</span></a>                <span class="n">class1</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_annassign_index</span><span class="p">(</span><span class="n">class1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery-186"><a href="#TomFoolery-186"><span class="linenos">186</span></a>        <span class="k">return</span> <span class="n">class1</span>
+</span><span id="TomFoolery-187"><a href="#TomFoolery-187"><span class="linenos">187</span></a>
+</span><span id="TomFoolery-188"><a href="#TomFoolery-188"><span class="linenos">188</span></a>    <span class="k">def</span> <span class="nf">nodes_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Pathish</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">stmt</span><span class="p">]:</span>
+</span><span id="TomFoolery-189"><a href="#TomFoolery-189"><span class="linenos">189</span></a>        <span class="sd">&quot;&quot;&quot;Return ast-parsed module body from `file`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery-190"><a href="#TomFoolery-190"><span class="linenos">190</span></a>        <span class="n">node</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">Pathier</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
+</span><span id="TomFoolery-191"><a href="#TomFoolery-191"><span class="linenos">191</span></a>        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+</span><span id="TomFoolery-192"><a href="#TomFoolery-192"><span class="linenos">192</span></a>
+</span><span id="TomFoolery-193"><a href="#TomFoolery-193"><span class="linenos">193</span></a>    <span class="c1"># Seat |======================================= Builders =======================================|</span>
+</span><span id="TomFoolery-194"><a href="#TomFoolery-194"><span class="linenos">194</span></a>
+</span><span id="TomFoolery-195"><a href="#TomFoolery-195"><span class="linenos">195</span></a>    <span class="k">def</span> <span class="nf">annotated_assignments_from_dict</span><span class="p">(</span>
+</span><span id="TomFoolery-196"><a href="#TomFoolery-196"><span class="linenos">196</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</span><span id="TomFoolery-197"><a href="#TomFoolery-197"><span class="linenos">197</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">]:</span>
+</span><span id="TomFoolery-198"><a href="#TomFoolery-198"><span class="linenos">198</span></a>        <span class="sd">&quot;&quot;&quot;Return a list of annotated assignment nodes built from `data`.</span>
+</span><span id="TomFoolery-199"><a href="#TomFoolery-199"><span class="linenos">199</span></a>
+</span><span id="TomFoolery-200"><a href="#TomFoolery-200"><span class="linenos">200</span></a><span class="sd">        If `recursive` is `True` (the default),</span>
+</span><span id="TomFoolery-201"><a href="#TomFoolery-201"><span class="linenos">201</span></a><span class="sd">        any values in `data` that are themselves a dictionary,</span>
+</span><span id="TomFoolery-202"><a href="#TomFoolery-202"><span class="linenos">202</span></a><span class="sd">        will have a `dataclass` built and inserted in `self.classes`.</span>
+</span><span id="TomFoolery-203"><a href="#TomFoolery-203"><span class="linenos">203</span></a>
+</span><span id="TomFoolery-204"><a href="#TomFoolery-204"><span class="linenos">204</span></a><span class="sd">        The field for that value will be annotated as an instance of that secondary `dataclass`.</span>
+</span><span id="TomFoolery-205"><a href="#TomFoolery-205"><span class="linenos">205</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery-206"><a href="#TomFoolery-206"><span class="linenos">206</span></a>        <span class="n">assigns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="TomFoolery-207"><a href="#TomFoolery-207"><span class="linenos">207</span></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="TomFoolery-208"><a href="#TomFoolery-208"><span class="linenos">208</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="TomFoolery-209"><a href="#TomFoolery-209"><span class="linenos">209</span></a>                <span class="n">dataclass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_dataclass</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span><span id="TomFoolery-210"><a href="#TomFoolery-210"><span class="linenos">210</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">add_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
+</span><span id="TomFoolery-211"><a href="#TomFoolery-211"><span class="linenos">211</span></a>                <span class="n">assigns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="TomFoolery-212"><a href="#TomFoolery-212"><span class="linenos">212</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">build_annotated_assignment</span><span class="p">(</span>
+</span><span id="TomFoolery-213"><a href="#TomFoolery-213"><span class="linenos">213</span></a>                        <span class="n">key</span><span class="p">,</span> <span class="n">utilities</span><span class="o">.</span><span class="n">key_to_classname</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="kc">False</span>
+</span><span id="TomFoolery-214"><a href="#TomFoolery-214"><span class="linenos">214</span></a>                    <span class="p">)</span>
+</span><span id="TomFoolery-215"><a href="#TomFoolery-215"><span class="linenos">215</span></a>                <span class="p">)</span>
+</span><span id="TomFoolery-216"><a href="#TomFoolery-216"><span class="linenos">216</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="TomFoolery-217"><a href="#TomFoolery-217"><span class="linenos">217</span></a>                <span class="n">assigns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_annotated_assignment</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+</span><span id="TomFoolery-218"><a href="#TomFoolery-218"><span class="linenos">218</span></a>        <span class="k">return</span> <span class="n">assigns</span>
+</span><span id="TomFoolery-219"><a href="#TomFoolery-219"><span class="linenos">219</span></a>
+</span><span id="TomFoolery-220"><a href="#TomFoolery-220"><span class="linenos">220</span></a>    <span class="k">def</span> <span class="nf">build_annotated_assignment</span><span class="p">(</span>
+</span><span id="TomFoolery-221"><a href="#TomFoolery-221"><span class="linenos">221</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">evaluate_type</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="TomFoolery-222"><a href="#TomFoolery-222"><span class="linenos">222</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">:</span>
+</span><span id="TomFoolery-223"><a href="#TomFoolery-223"><span class="linenos">223</span></a>        <span class="sd">&quot;&quot;&quot;Return an annotated assignment node with `name` and an annotation based on the type of `val`.</span>
+</span><span id="TomFoolery-224"><a href="#TomFoolery-224"><span class="linenos">224</span></a>
+</span><span id="TomFoolery-225"><a href="#TomFoolery-225"><span class="linenos">225</span></a><span class="sd">        If `evaluate_type` is `False`, then `val` will be used directly as the type annotation instead of `type(val).__name__`.</span>
+</span><span id="TomFoolery-226"><a href="#TomFoolery-226"><span class="linenos">226</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery-227"><a href="#TomFoolery-227"><span class="linenos">227</span></a>        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">(</span>
+</span><span id="TomFoolery-228"><a href="#TomFoolery-228"><span class="linenos">228</span></a>            <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">()),</span>
+</span><span id="TomFoolery-229"><a href="#TomFoolery-229"><span class="linenos">229</span></a>            <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">build_type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="n">evaluate_type</span> <span class="k">else</span> <span class="n">val</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+</span><span id="TomFoolery-230"><a href="#TomFoolery-230"><span class="linenos">230</span></a>            <span class="kc">None</span><span class="p">,</span>
+</span><span id="TomFoolery-231"><a href="#TomFoolery-231"><span class="linenos">231</span></a>            <span class="mi">1</span><span class="p">,</span>
+</span><span id="TomFoolery-232"><a href="#TomFoolery-232"><span class="linenos">232</span></a>        <span class="p">)</span>
+</span><span id="TomFoolery-233"><a href="#TomFoolery-233"><span class="linenos">233</span></a>
+</span><span id="TomFoolery-234"><a href="#TomFoolery-234"><span class="linenos">234</span></a>    <span class="k">def</span> <span class="nf">build_dataclass</span><span class="p">(</span>
+</span><span id="TomFoolery-235"><a href="#TomFoolery-235"><span class="linenos">235</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">add_methods</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="TomFoolery-236"><a href="#TomFoolery-236"><span class="linenos">236</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">:</span>
+</span><span id="TomFoolery-237"><a href="#TomFoolery-237"><span class="linenos">237</span></a>        <span class="sd">&quot;&quot;&quot;Build a `dataclass` with `name` from `data` and insert it into `self.classes`.</span>
+</span><span id="TomFoolery-238"><a href="#TomFoolery-238"><span class="linenos">238</span></a>
+</span><span id="TomFoolery-239"><a href="#TomFoolery-239"><span class="linenos">239</span></a><span class="sd">        If `add_methods` is `True`, `load()` and `dump()` functions will be added to the class.</span>
+</span><span id="TomFoolery-240"><a href="#TomFoolery-240"><span class="linenos">240</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery-241"><a href="#TomFoolery-241"><span class="linenos">241</span></a>        <span class="n">class_</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">(</span>
+</span><span id="TomFoolery-242"><a href="#TomFoolery-242"><span class="linenos">242</span></a>            <span class="n">utilities</span><span class="o">.</span><span class="n">key_to_classname</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>
+</span><span id="TomFoolery-243"><a href="#TomFoolery-243"><span class="linenos">243</span></a>            <span class="p">[],</span>
+</span><span id="TomFoolery-244"><a href="#TomFoolery-244"><span class="linenos">244</span></a>            <span class="p">[],</span>
+</span><span id="TomFoolery-245"><a href="#TomFoolery-245"><span class="linenos">245</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">annotated_assignments_from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+</span><span id="TomFoolery-246"><a href="#TomFoolery-246"><span class="linenos">246</span></a>            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataclass_node</span><span class="p">],</span>
+</span><span id="TomFoolery-247"><a href="#TomFoolery-247"><span class="linenos">247</span></a>        <span class="p">)</span>
+</span><span id="TomFoolery-248"><a href="#TomFoolery-248"><span class="linenos">248</span></a>        <span class="k">if</span> <span class="n">add_methods</span><span class="p">:</span>
+</span><span id="TomFoolery-249"><a href="#TomFoolery-249"><span class="linenos">249</span></a>            <span class="n">class_</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">load_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump_node</span><span class="p">])</span>
+</span><span id="TomFoolery-250"><a href="#TomFoolery-250"><span class="linenos">250</span></a>        <span class="k">return</span> <span class="n">class_</span>
+</span><span id="TomFoolery-251"><a href="#TomFoolery-251"><span class="linenos">251</span></a>
+</span><span id="TomFoolery-252"><a href="#TomFoolery-252"><span class="linenos">252</span></a>    <span class="c1"># Seat |======================================== Main ========================================|</span>
+</span><span id="TomFoolery-253"><a href="#TomFoolery-253"><span class="linenos">253</span></a>
+</span><span id="TomFoolery-254"><a href="#TomFoolery-254"><span class="linenos">254</span></a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="TomFoolery-255"><a href="#TomFoolery-255"><span class="linenos">255</span></a>        <span class="sd">&quot;&quot;&quot;Generate a `dataclass` with `name` from `data` and return the source code.</span>
+</span><span id="TomFoolery-256"><a href="#TomFoolery-256"><span class="linenos">256</span></a>
+</span><span id="TomFoolery-257"><a href="#TomFoolery-257"><span class="linenos">257</span></a><span class="sd">        Currently, all keys in `data` and any of its nested dictionaries must be valid Python variable names.</span>
+</span><span id="TomFoolery-258"><a href="#TomFoolery-258"><span class="linenos">258</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery-259"><a href="#TomFoolery-259"><span class="linenos">259</span></a>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_nodes</span><span class="p">:</span>
+</span><span id="TomFoolery-260"><a href="#TomFoolery-260"><span class="linenos">260</span></a>            <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+</span><span id="TomFoolery-261"><a href="#TomFoolery-261"><span class="linenos">261</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery-262"><a href="#TomFoolery-262"><span class="linenos">262</span></a>        <span class="n">dataclass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_dataclass</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span id="TomFoolery-263"><a href="#TomFoolery-263"><span class="linenos">263</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
+</span><span id="TomFoolery-264"><a href="#TomFoolery-264"><span class="linenos">264</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">fix_order</span><span class="p">()</span>
+</span><span id="TomFoolery-265"><a href="#TomFoolery-265"><span class="linenos">265</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
+</span></pre></div>
+
+
+    
+
+                            <div id="TomFoolery.__init__" class="classattr">
+                                        <input id="TomFoolery.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="name">TomFoolery</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">module</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>, </span><span class="param"><span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></span>)</span>
+
+                <label class="view-source-button" for="TomFoolery.__init__-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.__init__"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.__init__-15"><a href="#TomFoolery.__init__-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+</span><span id="TomFoolery.__init__-16"><a href="#TomFoolery.__init__-16"><span class="linenos">16</span></a>        <span class="sd">&quot;&quot;&quot;If no `module` is given, an empty new one will be created.</span>
+</span><span id="TomFoolery.__init__-17"><a href="#TomFoolery.__init__-17"><span class="linenos">17</span></a>
+</span><span id="TomFoolery.__init__-18"><a href="#TomFoolery.__init__-18"><span class="linenos">18</span></a><span class="sd">        When generating a `dataclass` from a dictionary,</span>
+</span><span id="TomFoolery.__init__-19"><a href="#TomFoolery.__init__-19"><span class="linenos">19</span></a><span class="sd">        if `recursive` is `True` then values that are also dictionaries will have a `dataclass` generated.</span>
+</span><span id="TomFoolery.__init__-20"><a href="#TomFoolery.__init__-20"><span class="linenos">20</span></a>
+</span><span id="TomFoolery.__init__-21"><a href="#TomFoolery.__init__-21"><span class="linenos">21</span></a><span class="sd">        The annotation for that field in the original `dataclass` will be typed as an instance of the second `dataclass`.</span>
+</span><span id="TomFoolery.__init__-22"><a href="#TomFoolery.__init__-22"><span class="linenos">22</span></a>
+</span><span id="TomFoolery.__init__-23"><a href="#TomFoolery.__init__-23"><span class="linenos">23</span></a><span class="sd">        If `recursive` is `False`, values that are dictionaries will be typed as such.</span>
+</span><span id="TomFoolery.__init__-24"><a href="#TomFoolery.__init__-24"><span class="linenos">24</span></a>
+</span><span id="TomFoolery.__init__-25"><a href="#TomFoolery.__init__-25"><span class="linenos">25</span></a><span class="sd">        i.e.</span>
+</span><span id="TomFoolery.__init__-26"><a href="#TomFoolery.__init__-26"><span class="linenos">26</span></a><span class="sd">        from a file named &quot;chonker.toml&quot;</span>
+</span><span id="TomFoolery.__init__-27"><a href="#TomFoolery.__init__-27"><span class="linenos">27</span></a><span class="sd">        &gt;&gt;&gt; {</span>
+</span><span id="TomFoolery.__init__-28"><a href="#TomFoolery.__init__-28"><span class="linenos">28</span></a><span class="sd">        &gt;&gt;&gt;  &quot;name&quot;: &quot;yeehaw&quot;,</span>
+</span><span id="TomFoolery.__init__-29"><a href="#TomFoolery.__init__-29"><span class="linenos">29</span></a><span class="sd">        &gt;&gt;&gt;  &quot;stats&quot;: {</span>
+</span><span id="TomFoolery.__init__-30"><a href="#TomFoolery.__init__-30"><span class="linenos">30</span></a><span class="sd">        &gt;&gt;&gt;      &quot;average&quot;: 77.54,</span>
+</span><span id="TomFoolery.__init__-31"><a href="#TomFoolery.__init__-31"><span class="linenos">31</span></a><span class="sd">        &gt;&gt;&gt;      &quot;max&quot;: 94.22,</span>
+</span><span id="TomFoolery.__init__-32"><a href="#TomFoolery.__init__-32"><span class="linenos">32</span></a><span class="sd">        &gt;&gt;&gt;      &quot;min&quot;: 22.76</span>
+</span><span id="TomFoolery.__init__-33"><a href="#TomFoolery.__init__-33"><span class="linenos">33</span></a><span class="sd">        &gt;&gt;&gt;  }</span>
+</span><span id="TomFoolery.__init__-34"><a href="#TomFoolery.__init__-34"><span class="linenos">34</span></a><span class="sd">        &gt;&gt;&gt; }</span>
+</span><span id="TomFoolery.__init__-35"><a href="#TomFoolery.__init__-35"><span class="linenos">35</span></a>
+</span><span id="TomFoolery.__init__-36"><a href="#TomFoolery.__init__-36"><span class="linenos">36</span></a><span class="sd">        With recursive == True</span>
+</span><span id="TomFoolery.__init__-37"><a href="#TomFoolery.__init__-37"><span class="linenos">37</span></a><span class="sd">        &gt;&gt;&gt; @dataclass</span>
+</span><span id="TomFoolery.__init__-38"><a href="#TomFoolery.__init__-38"><span class="linenos">38</span></a><span class="sd">        &gt;&gt;&gt; class Stats:</span>
+</span><span id="TomFoolery.__init__-39"><a href="#TomFoolery.__init__-39"><span class="linenos">39</span></a><span class="sd">        &gt;&gt;&gt;     average: float</span>
+</span><span id="TomFoolery.__init__-40"><a href="#TomFoolery.__init__-40"><span class="linenos">40</span></a><span class="sd">        &gt;&gt;&gt;     max: float</span>
+</span><span id="TomFoolery.__init__-41"><a href="#TomFoolery.__init__-41"><span class="linenos">41</span></a><span class="sd">        &gt;&gt;&gt;     min: float</span>
+</span><span id="TomFoolery.__init__-42"><a href="#TomFoolery.__init__-42"><span class="linenos">42</span></a><span class="sd">        &gt;&gt;&gt;</span>
+</span><span id="TomFoolery.__init__-43"><a href="#TomFoolery.__init__-43"><span class="linenos">43</span></a><span class="sd">        &gt;&gt;&gt; @dataclass</span>
+</span><span id="TomFoolery.__init__-44"><a href="#TomFoolery.__init__-44"><span class="linenos">44</span></a><span class="sd">        &gt;&gt;&gt; class Chonker:</span>
+</span><span id="TomFoolery.__init__-45"><a href="#TomFoolery.__init__-45"><span class="linenos">45</span></a><span class="sd">        &gt;&gt;&gt;     name: str</span>
+</span><span id="TomFoolery.__init__-46"><a href="#TomFoolery.__init__-46"><span class="linenos">46</span></a><span class="sd">        &gt;&gt;&gt;     stats: Stats</span>
+</span><span id="TomFoolery.__init__-47"><a href="#TomFoolery.__init__-47"><span class="linenos">47</span></a>
+</span><span id="TomFoolery.__init__-48"><a href="#TomFoolery.__init__-48"><span class="linenos">48</span></a><span class="sd">        With recursive == False</span>
+</span><span id="TomFoolery.__init__-49"><a href="#TomFoolery.__init__-49"><span class="linenos">49</span></a><span class="sd">        &gt;&gt;&gt; @dataclass</span>
+</span><span id="TomFoolery.__init__-50"><a href="#TomFoolery.__init__-50"><span class="linenos">50</span></a><span class="sd">        &gt;&gt;&gt; class Chonker:</span>
+</span><span id="TomFoolery.__init__-51"><a href="#TomFoolery.__init__-51"><span class="linenos">51</span></a><span class="sd">        &gt;&gt;&gt;     name: str</span>
+</span><span id="TomFoolery.__init__-52"><a href="#TomFoolery.__init__-52"><span class="linenos">52</span></a><span class="sd">        &gt;&gt;&gt;     stats: dict</span>
+</span><span id="TomFoolery.__init__-53"><a href="#TomFoolery.__init__-53"><span class="linenos">53</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery.__init__-54"><a href="#TomFoolery.__init__-54"><span class="linenos">54</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span> <span class="o">=</span> <span class="n">module</span> <span class="ow">or</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span><span class="p">([],</span> <span class="p">[])</span>
+</span><span id="TomFoolery.__init__-55"><a href="#TomFoolery.__init__-55"><span class="linenos">55</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span> <span class="o">=</span> <span class="n">recursive</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>If no <code>module</code> is given, an empty new one will be created.</p>
+
+<p>When generating a <code>dataclass</code> from a dictionary,
+if <code>recursive</code> is <code>True</code> then values that are also dictionaries will have a <code>dataclass</code> generated.</p>
+
+<p>The annotation for that field in the original <code>dataclass</code> will be typed as an instance of the second <code>dataclass</code>.</p>
+
+<p>If <code>recursive</code> is <code>False</code>, values that are dictionaries will be typed as such.</p>
+
+<p>i.e.
+from a file named "chonker.toml"</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;yeehaw&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="s2">&quot;stats&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="s2">&quot;average&quot;</span><span class="p">:</span> <span class="mf">77.54</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">94.22</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">22.76</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+</code></pre>
+</div>
+
+<p>With recursive == True</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nd">@dataclass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Stats</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">average</span><span class="p">:</span> <span class="nb">float</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">max</span><span class="p">:</span> <span class="nb">float</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">min</span><span class="p">:</span> <span class="nb">float</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@dataclass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Chonker</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">stats</span><span class="p">:</span> <span class="n">Stats</span>
+</code></pre>
+</div>
+
+<p>With recursive == False</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nd">@dataclass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Chonker</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">stats</span><span class="p">:</span> <span class="nb">dict</span>
+</code></pre>
+</div>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.class_names" class="classattr">
+                                <div class="attr variable">
+            <span class="name">class_names</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#TomFoolery.class_names"></a>
+    
+            <div class="docstring"><p>List of class names in <code>self.module.body</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.source" class="classattr">
+                                <div class="attr variable">
+            <span class="name">source</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#TomFoolery.source"></a>
+    
+            <div class="docstring"><p>Returns the source code this object represents.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.format_str" class="classattr">
+                                        <input id="TomFoolery.format_str-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">format_str</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">code</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.format_str-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.format_str"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.format_str-70"><a href="#TomFoolery.format_str-70"><span class="linenos">70</span></a>    <span class="k">def</span> <span class="nf">format_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="TomFoolery.format_str-71"><a href="#TomFoolery.format_str-71"><span class="linenos">71</span></a>        <span class="sd">&quot;&quot;&quot;Sort imports and format with `black`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery.format_str-72"><a href="#TomFoolery.format_str-72"><span class="linenos">72</span></a>        <span class="k">return</span> <span class="n">black</span><span class="o">.</span><span class="n">format_str</span><span class="p">(</span><span class="n">isort</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">sort_code_string</span><span class="p">(</span><span class="n">code</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="n">black</span><span class="o">.</span><span class="n">Mode</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Sort imports and format with <code>black</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.dataclass_node" class="classattr">
+                                <div class="attr variable">
+            <span class="name">dataclass_node</span><span class="annotation">: ast.Name</span>
+
+        
+    </div>
+    <a class="headerlink" href="#TomFoolery.dataclass_node"></a>
+    
+            <div class="docstring"><p>A node representing <code>@dataclass</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.dump_node" class="classattr">
+                                <div class="attr variable">
+            <span class="name">dump_node</span><span class="annotation">: ast.FunctionDef</span>
+
+        
+    </div>
+    <a class="headerlink" href="#TomFoolery.dump_node"></a>
+    
+            <div class="docstring"><p>The dumping function for the generated <code>dataclass</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.load_node" class="classattr">
+                                <div class="attr variable">
+            <span class="name">load_node</span><span class="annotation">: ast.FunctionDef</span>
+
+        
+    </div>
+    <a class="headerlink" href="#TomFoolery.load_node"></a>
+    
+            <div class="docstring"><p>The loading function for the generated <code>dataclass</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.add_dataclass" class="classattr">
+                                        <input id="TomFoolery.add_dataclass-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">add_dataclass</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">dataclass</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="TomFoolery.add_dataclass-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.add_dataclass"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.add_dataclass-124"><a href="#TomFoolery.add_dataclass-124"><span class="linenos">124</span></a>    <span class="k">def</span> <span class="nf">add_dataclass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataclass</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">):</span>
+</span><span id="TomFoolery.add_dataclass-125"><a href="#TomFoolery.add_dataclass-125"><span class="linenos">125</span></a>        <span class="sd">&quot;&quot;&quot;Add or merge `dataclass` into `self.module.body`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery.add_dataclass-126"><a href="#TomFoolery.add_dataclass-126"><span class="linenos">126</span></a>        <span class="k">if</span> <span class="n">dataclass</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">:</span>
+</span><span id="TomFoolery.add_dataclass-127"><a href="#TomFoolery.add_dataclass-127"><span class="linenos">127</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
+</span><span id="TomFoolery.add_dataclass-128"><a href="#TomFoolery.add_dataclass-128"><span class="linenos">128</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="TomFoolery.add_dataclass-129"><a href="#TomFoolery.add_dataclass-129"><span class="linenos">129</span></a>            <span class="n">classdex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_index</span><span class="p">(</span><span class="n">dataclass</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span id="TomFoolery.add_dataclass-130"><a href="#TomFoolery.add_dataclass-130"><span class="linenos">130</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="n">classdex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_dataclasses</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="n">classdex</span><span class="p">],</span> <span class="n">dataclass</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Add or merge <code>dataclass</code> into <code>self.module.body</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.class_index" class="classattr">
+                                        <input id="TomFoolery.class_index-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">class_index</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">class_name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.class_index-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.class_index"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.class_index-132"><a href="#TomFoolery.class_index-132"><span class="linenos">132</span></a>    <span class="k">def</span> <span class="nf">class_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="TomFoolery.class_index-133"><a href="#TomFoolery.class_index-133"><span class="linenos">133</span></a>        <span class="sd">&quot;&quot;&quot;Return the `self.module.body` index for a class with `class_name`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery.class_index-134"><a href="#TomFoolery.class_index-134"><span class="linenos">134</span></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">):</span>
+</span><span id="TomFoolery.class_index-135"><a href="#TomFoolery.class_index-135"><span class="linenos">135</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">)</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">class_name</span><span class="p">:</span>
+</span><span id="TomFoolery.class_index-136"><a href="#TomFoolery.class_index-136"><span class="linenos">136</span></a>                <span class="k">return</span> <span class="n">i</span>
+</span><span id="TomFoolery.class_index-137"><a href="#TomFoolery.class_index-137"><span class="linenos">137</span></a>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return the <code>self.module.body</code> index for a class with <code>class_name</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.fix_order" class="classattr">
+                                        <input id="TomFoolery.fix_order-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">fix_order</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="TomFoolery.fix_order-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.fix_order"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.fix_order-139"><a href="#TomFoolery.fix_order-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="nf">fix_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TomFoolery.fix_order-140"><a href="#TomFoolery.fix_order-140"><span class="linenos">140</span></a>        <span class="sd">&quot;&quot;&quot;Reorder `self.module.body` so that definitions preceede instances.</span>
+</span><span id="TomFoolery.fix_order-141"><a href="#TomFoolery.fix_order-141"><span class="linenos">141</span></a>
+</span><span id="TomFoolery.fix_order-142"><a href="#TomFoolery.fix_order-142"><span class="linenos">142</span></a><span class="sd">        i.e. A newly added class is defined before another class creates an instance.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery.fix_order-143"><a href="#TomFoolery.fix_order-143"><span class="linenos">143</span></a>        <span class="n">new_body</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">stmt</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="TomFoolery.fix_order-144"><a href="#TomFoolery.fix_order-144"><span class="linenos">144</span></a>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+</span><span id="TomFoolery.fix_order-145"><a href="#TomFoolery.fix_order-145"><span class="linenos">145</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">):</span>
+</span><span id="TomFoolery.fix_order-146"><a href="#TomFoolery.fix_order-146"><span class="linenos">146</span></a>                <span class="n">placed</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="TomFoolery.fix_order-147"><a href="#TomFoolery.fix_order-147"><span class="linenos">147</span></a>                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">new_node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_body</span><span class="p">):</span>
+</span><span id="TomFoolery.fix_order-148"><a href="#TomFoolery.fix_order-148"><span class="linenos">148</span></a>                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">new_node</span><span class="p">):</span>
+</span><span id="TomFoolery.fix_order-149"><a href="#TomFoolery.fix_order-149"><span class="linenos">149</span></a>                        <span class="n">new_body</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery.fix_order-150"><a href="#TomFoolery.fix_order-150"><span class="linenos">150</span></a>                        <span class="n">placed</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="TomFoolery.fix_order-151"><a href="#TomFoolery.fix_order-151"><span class="linenos">151</span></a>                        <span class="k">break</span>
+</span><span id="TomFoolery.fix_order-152"><a href="#TomFoolery.fix_order-152"><span class="linenos">152</span></a>                <span class="k">if</span> <span class="ow">not</span> <span class="n">placed</span><span class="p">:</span>
+</span><span id="TomFoolery.fix_order-153"><a href="#TomFoolery.fix_order-153"><span class="linenos">153</span></a>                    <span class="n">new_body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery.fix_order-154"><a href="#TomFoolery.fix_order-154"><span class="linenos">154</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="TomFoolery.fix_order-155"><a href="#TomFoolery.fix_order-155"><span class="linenos">155</span></a>                <span class="n">new_body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery.fix_order-156"><a href="#TomFoolery.fix_order-156"><span class="linenos">156</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">new_body</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Reorder <code>self.module.body</code> so that definitions preceede instances.</p>
+
+<p>i.e. A newly added class is defined before another class creates an instance.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.last_annassign_index" class="classattr">
+                                        <input id="TomFoolery.last_annassign_index-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">last_annassign_index</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">node</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.last_annassign_index-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.last_annassign_index"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.last_annassign_index-158"><a href="#TomFoolery.last_annassign_index-158"><span class="linenos">158</span></a>    <span class="k">def</span> <span class="nf">last_annassign_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="TomFoolery.last_annassign_index-159"><a href="#TomFoolery.last_annassign_index-159"><span class="linenos">159</span></a>        <span class="sd">&quot;&quot;&quot;Return the `node.body` index of the last annotated assignment node.</span>
+</span><span id="TomFoolery.last_annassign_index-160"><a href="#TomFoolery.last_annassign_index-160"><span class="linenos">160</span></a><span class="sd">        Assumes all annotated assignments are sequential and the first elements of `node`.</span>
+</span><span id="TomFoolery.last_annassign_index-161"><a href="#TomFoolery.last_annassign_index-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery.last_annassign_index-162"><a href="#TomFoolery.last_annassign_index-162"><span class="linenos">162</span></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">):</span>
+</span><span id="TomFoolery.last_annassign_index-163"><a href="#TomFoolery.last_annassign_index-163"><span class="linenos">163</span></a>            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">):</span>
+</span><span id="TomFoolery.last_annassign_index-164"><a href="#TomFoolery.last_annassign_index-164"><span class="linenos">164</span></a>                <span class="k">return</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span id="TomFoolery.last_annassign_index-165"><a href="#TomFoolery.last_annassign_index-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return the <code>node.body</code> index of the last annotated assignment node.
+Assumes all annotated assignments are sequential and the first elements of <code>node</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.merge_dataclasses" class="classattr">
+                                        <input id="TomFoolery.merge_dataclasses-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">merge_dataclasses</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">class1</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span>, </span><span class="param"><span class="n">class2</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span></span><span class="return-annotation">) -> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.merge_dataclasses-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.merge_dataclasses"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.merge_dataclasses-167"><a href="#TomFoolery.merge_dataclasses-167"><span class="linenos">167</span></a>    <span class="k">def</span> <span class="nf">merge_dataclasses</span><span class="p">(</span>
+</span><span id="TomFoolery.merge_dataclasses-168"><a href="#TomFoolery.merge_dataclasses-168"><span class="linenos">168</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">class1</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">,</span> <span class="n">class2</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span>
+</span><span id="TomFoolery.merge_dataclasses-169"><a href="#TomFoolery.merge_dataclasses-169"><span class="linenos">169</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">:</span>
+</span><span id="TomFoolery.merge_dataclasses-170"><a href="#TomFoolery.merge_dataclasses-170"><span class="linenos">170</span></a>        <span class="sd">&quot;&quot;&quot;Add annotated assignments and functions from `class2` to `class1` and return the result.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery.merge_dataclasses-171"><a href="#TomFoolery.merge_dataclasses-171"><span class="linenos">171</span></a>        <span class="n">funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">class1</span><span class="o">.</span><span class="n">body</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">)]</span>
+</span><span id="TomFoolery.merge_dataclasses-172"><a href="#TomFoolery.merge_dataclasses-172"><span class="linenos">172</span></a>        <span class="n">assigns</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="TomFoolery.merge_dataclasses-173"><a href="#TomFoolery.merge_dataclasses-173"><span class="linenos">173</span></a>            <span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span>
+</span><span id="TomFoolery.merge_dataclasses-174"><a href="#TomFoolery.merge_dataclasses-174"><span class="linenos">174</span></a>            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">class1</span><span class="o">.</span><span class="n">body</span>
+</span><span id="TomFoolery.merge_dataclasses-175"><a href="#TomFoolery.merge_dataclasses-175"><span class="linenos">175</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span>
+</span><span id="TomFoolery.merge_dataclasses-176"><a href="#TomFoolery.merge_dataclasses-176"><span class="linenos">176</span></a>        <span class="p">]</span>
+</span><span id="TomFoolery.merge_dataclasses-177"><a href="#TomFoolery.merge_dataclasses-177"><span class="linenos">177</span></a>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">class2</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+</span><span id="TomFoolery.merge_dataclasses-178"><a href="#TomFoolery.merge_dataclasses-178"><span class="linenos">178</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">)</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">:</span>
+</span><span id="TomFoolery.merge_dataclasses-179"><a href="#TomFoolery.merge_dataclasses-179"><span class="linenos">179</span></a>                <span class="n">class1</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery.merge_dataclasses-180"><a href="#TomFoolery.merge_dataclasses-180"><span class="linenos">180</span></a>            <span class="k">elif</span> <span class="p">(</span>
+</span><span id="TomFoolery.merge_dataclasses-181"><a href="#TomFoolery.merge_dataclasses-181"><span class="linenos">181</span></a>                <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">)</span>
+</span><span id="TomFoolery.merge_dataclasses-182"><a href="#TomFoolery.merge_dataclasses-182"><span class="linenos">182</span></a>                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span>
+</span><span id="TomFoolery.merge_dataclasses-183"><a href="#TomFoolery.merge_dataclasses-183"><span class="linenos">183</span></a>                <span class="ow">and</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">assigns</span><span class="p">)</span>
+</span><span id="TomFoolery.merge_dataclasses-184"><a href="#TomFoolery.merge_dataclasses-184"><span class="linenos">184</span></a>            <span class="p">):</span>
+</span><span id="TomFoolery.merge_dataclasses-185"><a href="#TomFoolery.merge_dataclasses-185"><span class="linenos">185</span></a>                <span class="n">class1</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_annassign_index</span><span class="p">(</span><span class="n">class1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery.merge_dataclasses-186"><a href="#TomFoolery.merge_dataclasses-186"><span class="linenos">186</span></a>        <span class="k">return</span> <span class="n">class1</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Add annotated assignments and functions from <code>class2</code> to <code>class1</code> and return the result.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.nodes_from_file" class="classattr">
+                                        <input id="TomFoolery.nodes_from_file-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">nodes_from_file</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">file</span><span class="p">:</span> <span class="n">pathier</span><span class="o">.</span><span class="n">pathier</span><span class="o">.</span><span class="n">Pathier</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">stmt</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.nodes_from_file-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.nodes_from_file"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.nodes_from_file-188"><a href="#TomFoolery.nodes_from_file-188"><span class="linenos">188</span></a>    <span class="k">def</span> <span class="nf">nodes_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Pathish</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">stmt</span><span class="p">]:</span>
+</span><span id="TomFoolery.nodes_from_file-189"><a href="#TomFoolery.nodes_from_file-189"><span class="linenos">189</span></a>        <span class="sd">&quot;&quot;&quot;Return ast-parsed module body from `file`.&quot;&quot;&quot;</span>
+</span><span id="TomFoolery.nodes_from_file-190"><a href="#TomFoolery.nodes_from_file-190"><span class="linenos">190</span></a>        <span class="n">node</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">Pathier</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
+</span><span id="TomFoolery.nodes_from_file-191"><a href="#TomFoolery.nodes_from_file-191"><span class="linenos">191</span></a>        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return ast-parsed module body from <code>file</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.annotated_assignments_from_dict" class="classattr">
+                                        <input id="TomFoolery.annotated_assignments_from_dict-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">annotated_assignments_from_dict</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.annotated_assignments_from_dict-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.annotated_assignments_from_dict"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.annotated_assignments_from_dict-195"><a href="#TomFoolery.annotated_assignments_from_dict-195"><span class="linenos">195</span></a>    <span class="k">def</span> <span class="nf">annotated_assignments_from_dict</span><span class="p">(</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-196"><a href="#TomFoolery.annotated_assignments_from_dict-196"><span class="linenos">196</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-197"><a href="#TomFoolery.annotated_assignments_from_dict-197"><span class="linenos">197</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">]:</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-198"><a href="#TomFoolery.annotated_assignments_from_dict-198"><span class="linenos">198</span></a>        <span class="sd">&quot;&quot;&quot;Return a list of annotated assignment nodes built from `data`.</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-199"><a href="#TomFoolery.annotated_assignments_from_dict-199"><span class="linenos">199</span></a>
+</span><span id="TomFoolery.annotated_assignments_from_dict-200"><a href="#TomFoolery.annotated_assignments_from_dict-200"><span class="linenos">200</span></a><span class="sd">        If `recursive` is `True` (the default),</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-201"><a href="#TomFoolery.annotated_assignments_from_dict-201"><span class="linenos">201</span></a><span class="sd">        any values in `data` that are themselves a dictionary,</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-202"><a href="#TomFoolery.annotated_assignments_from_dict-202"><span class="linenos">202</span></a><span class="sd">        will have a `dataclass` built and inserted in `self.classes`.</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-203"><a href="#TomFoolery.annotated_assignments_from_dict-203"><span class="linenos">203</span></a>
+</span><span id="TomFoolery.annotated_assignments_from_dict-204"><a href="#TomFoolery.annotated_assignments_from_dict-204"><span class="linenos">204</span></a><span class="sd">        The field for that value will be annotated as an instance of that secondary `dataclass`.</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-205"><a href="#TomFoolery.annotated_assignments_from_dict-205"><span class="linenos">205</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-206"><a href="#TomFoolery.annotated_assignments_from_dict-206"><span class="linenos">206</span></a>        <span class="n">assigns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-207"><a href="#TomFoolery.annotated_assignments_from_dict-207"><span class="linenos">207</span></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-208"><a href="#TomFoolery.annotated_assignments_from_dict-208"><span class="linenos">208</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-209"><a href="#TomFoolery.annotated_assignments_from_dict-209"><span class="linenos">209</span></a>                <span class="n">dataclass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_dataclass</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-210"><a href="#TomFoolery.annotated_assignments_from_dict-210"><span class="linenos">210</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">add_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-211"><a href="#TomFoolery.annotated_assignments_from_dict-211"><span class="linenos">211</span></a>                <span class="n">assigns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-212"><a href="#TomFoolery.annotated_assignments_from_dict-212"><span class="linenos">212</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">build_annotated_assignment</span><span class="p">(</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-213"><a href="#TomFoolery.annotated_assignments_from_dict-213"><span class="linenos">213</span></a>                        <span class="n">key</span><span class="p">,</span> <span class="n">utilities</span><span class="o">.</span><span class="n">key_to_classname</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="kc">False</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-214"><a href="#TomFoolery.annotated_assignments_from_dict-214"><span class="linenos">214</span></a>                    <span class="p">)</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-215"><a href="#TomFoolery.annotated_assignments_from_dict-215"><span class="linenos">215</span></a>                <span class="p">)</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-216"><a href="#TomFoolery.annotated_assignments_from_dict-216"><span class="linenos">216</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-217"><a href="#TomFoolery.annotated_assignments_from_dict-217"><span class="linenos">217</span></a>                <span class="n">assigns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_annotated_assignment</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+</span><span id="TomFoolery.annotated_assignments_from_dict-218"><a href="#TomFoolery.annotated_assignments_from_dict-218"><span class="linenos">218</span></a>        <span class="k">return</span> <span class="n">assigns</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return a list of annotated assignment nodes built from <code>data</code>.</p>
+
+<p>If <code>recursive</code> is <code>True</code> (the default),
+any values in <code>data</code> that are themselves a dictionary,
+will have a <code>dataclass</code> built and inserted in <code>self.classes</code>.</p>
+
+<p>The field for that value will be annotated as an instance of that secondary <code>dataclass</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.build_annotated_assignment" class="classattr">
+                                        <input id="TomFoolery.build_annotated_assignment-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">build_annotated_assignment</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">val</span><span class="p">:</span> <span class="n">Any</span>, </span><span class="param"><span class="n">evaluate_type</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></span><span class="return-annotation">) -> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.build_annotated_assignment-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.build_annotated_assignment"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.build_annotated_assignment-220"><a href="#TomFoolery.build_annotated_assignment-220"><span class="linenos">220</span></a>    <span class="k">def</span> <span class="nf">build_annotated_assignment</span><span class="p">(</span>
+</span><span id="TomFoolery.build_annotated_assignment-221"><a href="#TomFoolery.build_annotated_assignment-221"><span class="linenos">221</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">evaluate_type</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="TomFoolery.build_annotated_assignment-222"><a href="#TomFoolery.build_annotated_assignment-222"><span class="linenos">222</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">:</span>
+</span><span id="TomFoolery.build_annotated_assignment-223"><a href="#TomFoolery.build_annotated_assignment-223"><span class="linenos">223</span></a>        <span class="sd">&quot;&quot;&quot;Return an annotated assignment node with `name` and an annotation based on the type of `val`.</span>
+</span><span id="TomFoolery.build_annotated_assignment-224"><a href="#TomFoolery.build_annotated_assignment-224"><span class="linenos">224</span></a>
+</span><span id="TomFoolery.build_annotated_assignment-225"><a href="#TomFoolery.build_annotated_assignment-225"><span class="linenos">225</span></a><span class="sd">        If `evaluate_type` is `False`, then `val` will be used directly as the type annotation instead of `type(val).__name__`.</span>
+</span><span id="TomFoolery.build_annotated_assignment-226"><a href="#TomFoolery.build_annotated_assignment-226"><span class="linenos">226</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery.build_annotated_assignment-227"><a href="#TomFoolery.build_annotated_assignment-227"><span class="linenos">227</span></a>        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">AnnAssign</span><span class="p">(</span>
+</span><span id="TomFoolery.build_annotated_assignment-228"><a href="#TomFoolery.build_annotated_assignment-228"><span class="linenos">228</span></a>            <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">()),</span>
+</span><span id="TomFoolery.build_annotated_assignment-229"><a href="#TomFoolery.build_annotated_assignment-229"><span class="linenos">229</span></a>            <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">build_type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="n">evaluate_type</span> <span class="k">else</span> <span class="n">val</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+</span><span id="TomFoolery.build_annotated_assignment-230"><a href="#TomFoolery.build_annotated_assignment-230"><span class="linenos">230</span></a>            <span class="kc">None</span><span class="p">,</span>
+</span><span id="TomFoolery.build_annotated_assignment-231"><a href="#TomFoolery.build_annotated_assignment-231"><span class="linenos">231</span></a>            <span class="mi">1</span><span class="p">,</span>
+</span><span id="TomFoolery.build_annotated_assignment-232"><a href="#TomFoolery.build_annotated_assignment-232"><span class="linenos">232</span></a>        <span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return an annotated assignment node with <code>name</code> and an annotation based on the type of <code>val</code>.</p>
+
+<p>If <code>evaluate_type</code> is <code>False</code>, then <code>val</code> will be used directly as the type annotation instead of <code>type(val).__name__</code>.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.build_dataclass" class="classattr">
+                                        <input id="TomFoolery.build_dataclass-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">build_dataclass</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">name</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>,</span><span class="param">	<span class="n">add_methods</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.build_dataclass-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.build_dataclass"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.build_dataclass-234"><a href="#TomFoolery.build_dataclass-234"><span class="linenos">234</span></a>    <span class="k">def</span> <span class="nf">build_dataclass</span><span class="p">(</span>
+</span><span id="TomFoolery.build_dataclass-235"><a href="#TomFoolery.build_dataclass-235"><span class="linenos">235</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">add_methods</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="TomFoolery.build_dataclass-236"><a href="#TomFoolery.build_dataclass-236"><span class="linenos">236</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">:</span>
+</span><span id="TomFoolery.build_dataclass-237"><a href="#TomFoolery.build_dataclass-237"><span class="linenos">237</span></a>        <span class="sd">&quot;&quot;&quot;Build a `dataclass` with `name` from `data` and insert it into `self.classes`.</span>
+</span><span id="TomFoolery.build_dataclass-238"><a href="#TomFoolery.build_dataclass-238"><span class="linenos">238</span></a>
+</span><span id="TomFoolery.build_dataclass-239"><a href="#TomFoolery.build_dataclass-239"><span class="linenos">239</span></a><span class="sd">        If `add_methods` is `True`, `load()` and `dump()` functions will be added to the class.</span>
+</span><span id="TomFoolery.build_dataclass-240"><a href="#TomFoolery.build_dataclass-240"><span class="linenos">240</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery.build_dataclass-241"><a href="#TomFoolery.build_dataclass-241"><span class="linenos">241</span></a>        <span class="n">class_</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">(</span>
+</span><span id="TomFoolery.build_dataclass-242"><a href="#TomFoolery.build_dataclass-242"><span class="linenos">242</span></a>            <span class="n">utilities</span><span class="o">.</span><span class="n">key_to_classname</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>
+</span><span id="TomFoolery.build_dataclass-243"><a href="#TomFoolery.build_dataclass-243"><span class="linenos">243</span></a>            <span class="p">[],</span>
+</span><span id="TomFoolery.build_dataclass-244"><a href="#TomFoolery.build_dataclass-244"><span class="linenos">244</span></a>            <span class="p">[],</span>
+</span><span id="TomFoolery.build_dataclass-245"><a href="#TomFoolery.build_dataclass-245"><span class="linenos">245</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">annotated_assignments_from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+</span><span id="TomFoolery.build_dataclass-246"><a href="#TomFoolery.build_dataclass-246"><span class="linenos">246</span></a>            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataclass_node</span><span class="p">],</span>
+</span><span id="TomFoolery.build_dataclass-247"><a href="#TomFoolery.build_dataclass-247"><span class="linenos">247</span></a>        <span class="p">)</span>
+</span><span id="TomFoolery.build_dataclass-248"><a href="#TomFoolery.build_dataclass-248"><span class="linenos">248</span></a>        <span class="k">if</span> <span class="n">add_methods</span><span class="p">:</span>
+</span><span id="TomFoolery.build_dataclass-249"><a href="#TomFoolery.build_dataclass-249"><span class="linenos">249</span></a>            <span class="n">class_</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">load_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump_node</span><span class="p">])</span>
+</span><span id="TomFoolery.build_dataclass-250"><a href="#TomFoolery.build_dataclass-250"><span class="linenos">250</span></a>        <span class="k">return</span> <span class="n">class_</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Build a <code>dataclass</code> with <code>name</code> from <code>data</code> and insert it into <code>self.classes</code>.</p>
+
+<p>If <code>add_methods</code> is <code>True</code>, <code>load()</code> and <code>dump()</code> functions will be added to the class.</p>
+</div>
+
+
+                            </div>
+                            <div id="TomFoolery.generate" class="classattr">
+                                        <input id="TomFoolery.generate-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">generate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="TomFoolery.generate-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TomFoolery.generate"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TomFoolery.generate-254"><a href="#TomFoolery.generate-254"><span class="linenos">254</span></a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="TomFoolery.generate-255"><a href="#TomFoolery.generate-255"><span class="linenos">255</span></a>        <span class="sd">&quot;&quot;&quot;Generate a `dataclass` with `name` from `data` and return the source code.</span>
+</span><span id="TomFoolery.generate-256"><a href="#TomFoolery.generate-256"><span class="linenos">256</span></a>
+</span><span id="TomFoolery.generate-257"><a href="#TomFoolery.generate-257"><span class="linenos">257</span></a><span class="sd">        Currently, all keys in `data` and any of its nested dictionaries must be valid Python variable names.</span>
+</span><span id="TomFoolery.generate-258"><a href="#TomFoolery.generate-258"><span class="linenos">258</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="TomFoolery.generate-259"><a href="#TomFoolery.generate-259"><span class="linenos">259</span></a>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_nodes</span><span class="p">:</span>
+</span><span id="TomFoolery.generate-260"><a href="#TomFoolery.generate-260"><span class="linenos">260</span></a>            <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+</span><span id="TomFoolery.generate-261"><a href="#TomFoolery.generate-261"><span class="linenos">261</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+</span><span id="TomFoolery.generate-262"><a href="#TomFoolery.generate-262"><span class="linenos">262</span></a>        <span class="n">dataclass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_dataclass</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span id="TomFoolery.generate-263"><a href="#TomFoolery.generate-263"><span class="linenos">263</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
+</span><span id="TomFoolery.generate-264"><a href="#TomFoolery.generate-264"><span class="linenos">264</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">fix_order</span><span class="p">()</span>
+</span><span id="TomFoolery.generate-265"><a href="#TomFoolery.generate-265"><span class="linenos">265</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Generate a <code>dataclass</code> with <code>name</code> from <code>data</code> and return the source code.</p>
+
+<p>Currently, all keys in <code>data</code> and any of its nested dictionaries must be valid Python variable names.</p>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="generate_from_file">
+                            <input id="generate_from_file-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">generate_from_file</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">datapath</span><span class="p">:</span> <span class="n">pathier</span><span class="o">.</span><span class="n">pathier</span><span class="o">.</span><span class="n">Pathier</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">outpath</span><span class="p">:</span> <span class="n">pathier</span><span class="o">.</span><span class="n">pathier</span><span class="o">.</span><span class="n">Pathier</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="generate_from_file-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#generate_from_file"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="generate_from_file-268"><a href="#generate_from_file-268"><span class="linenos">268</span></a><span class="k">def</span> <span class="nf">generate_from_file</span><span class="p">(</span>
+</span><span id="generate_from_file-269"><a href="#generate_from_file-269"><span class="linenos">269</span></a>    <span class="n">datapath</span><span class="p">:</span> <span class="n">Pathish</span><span class="p">,</span> <span class="n">outpath</span><span class="p">:</span> <span class="n">Pathish</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="generate_from_file-270"><a href="#generate_from_file-270"><span class="linenos">270</span></a><span class="p">):</span>
+</span><span id="generate_from_file-271"><a href="#generate_from_file-271"><span class="linenos">271</span></a>    <span class="sd">&quot;&quot;&quot;Generate a `dataclass` named after the file `datapath` points at.</span>
+</span><span id="generate_from_file-272"><a href="#generate_from_file-272"><span class="linenos">272</span></a>
+</span><span id="generate_from_file-273"><a href="#generate_from_file-273"><span class="linenos">273</span></a><span class="sd">    If `outpath` is not given, the output file will be the same as `datapath`, but with a `.py` extension.</span>
+</span><span id="generate_from_file-274"><a href="#generate_from_file-274"><span class="linenos">274</span></a>
+</span><span id="generate_from_file-275"><a href="#generate_from_file-275"><span class="linenos">275</span></a><span class="sd">    Can be any `.toml` or `.json` file where all keys are valid Python variable names.</span>
+</span><span id="generate_from_file-276"><a href="#generate_from_file-276"><span class="linenos">276</span></a>
+</span><span id="generate_from_file-277"><a href="#generate_from_file-277"><span class="linenos">277</span></a><span class="sd">    If `recursive` is `True`, dictionary values will be converted to dataclasses.</span>
+</span><span id="generate_from_file-278"><a href="#generate_from_file-278"><span class="linenos">278</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="generate_from_file-279"><a href="#generate_from_file-279"><span class="linenos">279</span></a>
+</span><span id="generate_from_file-280"><a href="#generate_from_file-280"><span class="linenos">280</span></a>    <span class="n">datapath</span> <span class="o">=</span> <span class="n">Pathier</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
+</span><span id="generate_from_file-281"><a href="#generate_from_file-281"><span class="linenos">281</span></a>    <span class="k">if</span> <span class="n">outpath</span><span class="p">:</span>
+</span><span id="generate_from_file-282"><a href="#generate_from_file-282"><span class="linenos">282</span></a>        <span class="n">outpath</span> <span class="o">=</span> <span class="n">Pathier</span><span class="p">(</span><span class="n">outpath</span><span class="p">)</span>
+</span><span id="generate_from_file-283"><a href="#generate_from_file-283"><span class="linenos">283</span></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="generate_from_file-284"><a href="#generate_from_file-284"><span class="linenos">284</span></a>        <span class="n">outpath</span> <span class="o">=</span> <span class="n">datapath</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">)</span>
+</span><span id="generate_from_file-285"><a href="#generate_from_file-285"><span class="linenos">285</span></a>    <span class="n">module</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">outpath</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span> <span class="k">if</span> <span class="n">outpath</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
+</span><span id="generate_from_file-286"><a href="#generate_from_file-286"><span class="linenos">286</span></a>    <span class="n">data</span> <span class="o">=</span> <span class="n">datapath</span><span class="o">.</span><span class="n">loads</span><span class="p">()</span>
+</span><span id="generate_from_file-287"><a href="#generate_from_file-287"><span class="linenos">287</span></a>    <span class="n">fool</span> <span class="o">=</span> <span class="n">TomFoolery</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">recursive</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span><span id="generate_from_file-288"><a href="#generate_from_file-288"><span class="linenos">288</span></a>    <span class="n">source</span> <span class="o">=</span> <span class="n">fool</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">datapath</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span><span id="generate_from_file-289"><a href="#generate_from_file-289"><span class="linenos">289</span></a>    <span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="n">datapath</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span id="generate_from_file-290"><a href="#generate_from_file-290"><span class="linenos">290</span></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="generate_from_file-291"><a href="#generate_from_file-291"><span class="linenos">291</span></a>        <span class="n">source</span> <span class="o">=</span> <span class="n">fool</span><span class="o">.</span><span class="n">format_str</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+</span><span id="generate_from_file-292"><a href="#generate_from_file-292"><span class="linenos">292</span></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="generate_from_file-293"><a href="#generate_from_file-293"><span class="linenos">293</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to format output.&quot;</span><span class="p">)</span>
+</span><span id="generate_from_file-294"><a href="#generate_from_file-294"><span class="linenos">294</span></a>    <span class="n">outpath</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Generate a <code>dataclass</code> named after the file <code>datapath</code> points at.</p>
+
+<p>If <code>outpath</code> is not given, the output file will be the same as <code>datapath</code>, but with a <code>.py</code> extension.</p>
+
+<p>Can be any <code>.toml</code> or <code>.json</code> file where all keys are valid Python variable names.</p>
+
+<p>If <code>recursive</code> is <code>True</code>, dictionary values will be converted to dataclasses.</p>
+</div>
+
+
+                </section>
     </main>
-<script>
-    function escapeHTML(html) {
-        return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
-    }
-
-    const originalContent = document.querySelector("main.pdoc");
-    let currentContent = originalContent;
-
-    function setContent(innerHTML) {
-        let elem;
-        if (innerHTML) {
-            elem = document.createElement("main");
-            elem.classList.add("pdoc");
-            elem.innerHTML = innerHTML;
-        } else {
-            elem = originalContent;
-        }
-        if (currentContent !== elem) {
-            currentContent.replaceWith(elem);
-            currentContent = elem;
-        }
-    }
-
-    function getSearchTerm() {
-        return (new URL(window.location)).searchParams.get("search");
-    }
-
-    const searchBox = document.querySelector(".pdoc input[type=search]");
-    searchBox.addEventListener("input", function () {
-        let url = new URL(window.location);
-        if (searchBox.value.trim()) {
-            url.hash = "";
-            url.searchParams.set("search", searchBox.value);
-        } else {
-            url.searchParams.delete("search");
-        }
-        history.replaceState("", "", url.toString());
-        onInput();
-    });
-    window.addEventListener("popstate", onInput);
-
-
-    let search, searchErr;
-
-    async function initialize() {
-        try {
-            search = await new Promise((resolve, reject) => {
-                const script = document.createElement("script");
-                script.type = "text/javascript";
-                script.async = true;
-                script.onload = () => resolve(window.pdocSearch);
-                script.onerror = (e) => reject(e);
-                script.src = "search.js";
-                document.getElementsByTagName("head")[0].appendChild(script);
-            });
-        } catch (e) {
-            console.error("Cannot fetch pdoc search index");
-            searchErr = "Cannot fetch search index.";
-        }
-        onInput();
-
-        document.querySelector("nav.pdoc").addEventListener("click", e => {
-            if (e.target.hash) {
-                searchBox.value = "";
-                searchBox.dispatchEvent(new Event("input"));
-            }
-        });
-    }
-
-    function onInput() {
-        setContent((() => {
-            const term = getSearchTerm();
-            if (!term) {
-                return null
-            }
-            if (searchErr) {
-                return `<h3>Error: ${searchErr}</h3>`
-            }
-            if (!search) {
-                return "<h3>Searching...</h3>"
-            }
-
-            window.scrollTo({top: 0, left: 0, behavior: 'auto'});
-
-            const results = search(term);
-
-            let html;
-            if (results.length === 0) {
-                html = `No search results for '${escapeHTML(term)}'.`
-            } else {
-                html = `<h4>${results.length} search result${results.length > 1 ? "s" : ""} for '${escapeHTML(term)}'.</h4>`;
-            }
-            for (let result of results.slice(0, 10)) {
-                let doc = result.doc;
-                let url = `${doc.modulename.replaceAll(".", "/")}.html`;
-                if (doc.qualname) {
-                    url += `#${doc.qualname}`;
-                }
-
-                let heading;
-                switch (result.doc.kind) {
-                    case "function":
-                        if (doc.fullname.endsWith(".__init__")) {
-                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
-                        } else {
-                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
-                        }
-                        break;
-                    case "class":
-                        heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;
-                        if (doc.bases)
-                            heading += `<wbr>(<span class="base">${doc.bases}</span>)`;
-                        heading += `:`;
-                        break;
-                    case "variable":
-                        heading = `<span class="name">${doc.fullname}</span>`;
-                        if (doc.annotation)
-                            heading += `<span class="annotation">${doc.annotation}</span>`;
-                        if (doc.default_value)
-                            heading += `<span class="default_value">${doc.default_value}</span>`;
-                        break;
-                    default:
-                        heading = `<span class="name">${doc.fullname}</span>`;
-                        break;
-                }
-                html += `
-                        <section class="search-result">
-                        <a href="${url}" class="attr ${doc.kind}">${heading}</a>
-                        <div class="docstring">${doc.doc}</div>
-                        </section>
-                    `;
-
-            }
-            return html;
-        })());
-    }
-
-    if (getSearchTerm()) {
-        initialize();
-        searchBox.value = getSearchTerm();
-        onInput();
-    } else {
-        searchBox.addEventListener("focus", initialize, {once: true});
-    }
-
-    searchBox.addEventListener("keydown", e => {
-        if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
-            let focused = currentContent.querySelector(".search-result.focused");
-            if (!focused) {
-                currentContent.querySelector(".search-result").classList.add("focused");
-            } else if (
-                e.key === "ArrowDown"
-                && focused.nextElementSibling
-                && focused.nextElementSibling.classList.contains("search-result")
-            ) {
-                focused.classList.remove("focused");
-                focused.nextElementSibling.classList.add("focused");
-                focused.nextElementSibling.scrollIntoView({
-                    behavior: "smooth",
-                    block: "nearest",
-                    inline: "nearest"
-                });
-            } else if (
-                e.key === "ArrowUp"
-                && focused.previousElementSibling
-                && focused.previousElementSibling.classList.contains("search-result")
-            ) {
-                focused.classList.remove("focused");
-                focused.previousElementSibling.classList.add("focused");
-                focused.previousElementSibling.scrollIntoView({
-                    behavior: "smooth",
-                    block: "nearest",
-                    inline: "nearest"
-                });
-            } else if (
-                e.key === "Enter"
-            ) {
-                focused.querySelector("a").click();
-            }
-        }
-    });
-</script></body>
+</body>
 </html>

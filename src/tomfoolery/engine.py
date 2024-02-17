@@ -1,6 +1,6 @@
 from typing import Any
 
-import ast_comments as ast
+import ast_comments as ast  # type: ignore
 import black
 import isort
 from pathier import Pathier, Pathish
@@ -139,7 +139,7 @@ class TomFoolery:
         """Reorder `self.module.body` so that definitions preceede instances.
 
         i.e. A newly added class is defined before another class creates an instance."""
-        new_body = []
+        new_body: list[ast.stmt] = []
         for node in self.module.body:
             if isinstance(node, ast.ClassDef):
                 placed = False
@@ -186,7 +186,7 @@ class TomFoolery:
 
     def nodes_from_file(self, file: Pathish) -> list[ast.stmt]:
         """Return ast-parsed module body from `file`."""
-        node = ast.parse(Pathier(file).read_text())
+        node = ast.parse(Pathier(file).read_text())  # type: ignore
         return node.body if isinstance(node, ast.Module) else []
 
     # Seat |======================================= Builders =======================================|
@@ -202,10 +202,10 @@ class TomFoolery:
 
         The field for that value will be annotated as an instance of that secondary `dataclass`.
         """
-        assigns = []
+        assigns: list[ast.AnnAssign] = []
         for key, val in data.items():
             if self.recursive and isinstance(val, dict):
-                dataclass = self.build_dataclass(key, val)
+                dataclass = self.build_dataclass(key, val)  # type: ignore
                 self.add_dataclass(dataclass)
                 assigns.append(
                     self.build_annotated_assignment(
@@ -281,7 +281,7 @@ def generate_from_file(
         outpath = Pathier(outpath)
     else:
         outpath = datapath.with_suffix(".py")
-    module = ast.parse(outpath.read_text()) if outpath.exists() else None
+    module = ast.parse(outpath.read_text()) if outpath.exists() else None  # type: ignore
     data = datapath.loads()
     fool = TomFoolery(module, recursive)  # type: ignore
     source = fool.generate(datapath.stem, data)

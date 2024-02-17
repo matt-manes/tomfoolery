@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Callable
 
 
 def normalize_key(key: str) -> str:
@@ -21,7 +21,7 @@ def build_type(obj: Any, optional: bool = False) -> str:
     >>> l = [1,"2"]
     >>> build_type(l)
     >>> 'Optional[list[int, str]]'"""
-    name = lambda obj: type(obj).__name__
+    name: Callable[[Any], str] = lambda obj: type(obj).__name__
     type_ = (
         f"{name(obj)}[{'|'.join(sorted(set(name(item) for item in obj)))}]"
         if type(obj) in [list, tuple]

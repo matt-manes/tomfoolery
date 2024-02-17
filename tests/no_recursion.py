@@ -8,8 +8,8 @@ from typing_extensions import Self
 @dataclass
 class Venue:
     name: str
-    address: dict
-    calendar: dict
+    address: dict[str, str]
+    calendar: dict[str, str]
 
     @classmethod
     def load(cls, path: Pathish = Pathier(__file__).parent / "venue.toml") -> Self:

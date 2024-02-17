@@ -1,6 +1,6 @@
 import sys
 
-import ast_comments as ast
+import ast_comments as ast  # type: ignore
 import pytest
 from pathier import Pathier
 
@@ -31,7 +31,7 @@ def test__dataclass():
 def test__no_overwrite():
     datafile = root / "venue.toml"
     src = (root / "venue2.py").read_text()
-    module = ast.parse(src)
+    module = ast.parse(src)  # type:ignore
     engine = TomFoolery(module)  # type:ignore
     tom = engine.generate(datafile.stem, datafile.loads())
     (root / "venue22.py").write_text(tom)
